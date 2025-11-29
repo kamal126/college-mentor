@@ -9,7 +9,7 @@ function heading() {
           <Link href={"/"}>Home</Link>
         </div>
         <div className="">
-          <Link href={"/account"}>Account</Link>
+          <Link href={"/home"}>Account</Link>
         </div>
         <div>
           <Link href={"/Mentor"}>AIMentor</Link>
