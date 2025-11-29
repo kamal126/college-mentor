@@ -80,7 +80,7 @@ export default function HomePage() {
           <LeftSidebar />
         </div> */}
 
-        <div className="sticky top-10 h-screen hidden md:block">
+        
           {/* Overlay (Mobile Only) */}
           {open && (
             <div
@@ -90,15 +90,15 @@ export default function HomePage() {
           )}
 
           {/* Sidebar */}
+          
           <div
             className={cn(
-              "fixed top-0 left-0 h-screen bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 z-50 md:relative md:translate-x-0 md:block",
+              "fixed top-10 left-0 h-screen bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 z-50 md:relative md:translate-x-0 md:block",
               open ? "translate-x-0" : "-translate-x-full",
               "md:w-[280px] w-64"
             )}
           >
             <LeftSidebar />
-          </div>
         </div>
 
         {/* Main Content (Scrollable) */}
