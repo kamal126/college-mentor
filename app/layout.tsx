@@ -9,9 +9,6 @@ export const metadata: Metadata = {
   description: "Dive into our comprehensive music courses and transform your musical journey today.",
 };
 
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{children: React.ReactNode;}>) 
