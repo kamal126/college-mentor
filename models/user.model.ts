@@ -1,47 +1,71 @@
-import mongoose, { Schema, Document, model } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
 
-
-
-export interface IUser extends Document {
+export interface IUser {
   username: string;
   email: string;
   fullName: string;
   avatar: string;
   password: string;
-  refreshToken?: string;
-  isPasswordCorrect(password: string): Promise<boolean>;
-  generateAccessToken(): string;
-  generateRefreshToken(): string;
 }
 
-const userSchema = new Schema<IUser>({
-  username: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  fullName: { type: String, required: true, trim: true },
-  avatar: { type: String, required: true },
-  password: { type: String, required: true },
-  refreshToken: { type: String },
-}, { timestamps: true });
+export interface IExpert {
+  user: mongoose.Types.ObjectId;
+  fullName: string;
+  title: string;
+  company: string;
+  companies: string[];
+  experience: number;
+  bio: string;
+  rating: number;
+  price: number;
+  skills: string[];
+  avatar: string;
+}
 
-// Hash password before saving
-// userSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next();
-//   this.password = await bcrypt.hash(this.password, 10);
-//   next();
-// });
+const userSchema = new Schema<IUser>(
+  {
+    username: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    fullName: { type: String, required: true, trim: true },
+    avatar: { type: String, default: "/assets/logo.png" },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-// Password comparison
-// userSchema.methods.isPasswordCorrect = async function(password: string){
-//   return await bcrypt.compare(password, this.password);
-// }
+const expertSchema = new Schema<IExpert>(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-// Generate JWT tokens
-// userSchema.methods.generateAccessToken = function(){
-//   return jwt.sign({ _id: this._id, email: this.email, username: this.username }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
-// }
+    fullName: { type: String, required: true },
+    title: { type: String, required: true, lowercase: true },
+    company: { type: String, required: true, lowercase: true },
 
-// userSchema.methods.generateRefreshToken = function(){
-//   return jwt.sign({ _id: this._id, email: this.email }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
-// }
+    companies: {
+      type: [String],
+      required: true,
+    },
 
-export const User = mongoose.models.User || model<IUser>("User", userSchema);
+    experience: { type: Number, required: true, default: 0 },
+    bio: { type: String, required: true },
+
+    rating: { type: Number, default: 0 },
+    price: { type: Number, default: 0 },
+
+    skills: {
+      type: [String],
+      required: true,
+    },
+
+    avatar: { type: String, default: "/assets/logo.png" },
+  },
+  { timestamps: true }
+);
+
+const User: Model<IUser> =
+  mongoose.models.User || mongoose.model<IUser>("User", userSchema);
+
+const Mentor: Model<IExpert> =
+  mongoose.models.Mentor || mongoose.model<IExpert>("Mentor", expertSchema);
+
+export { User, Mentor };
