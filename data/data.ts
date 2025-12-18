@@ -1,4 +1,6 @@
-const mentors = [
+import { Mentor, Author } from "@/lib/types";
+
+const mentors: Mentor[] = [
   {
     id:1,
     name: "Rahul Verma",
@@ -10,7 +12,8 @@ const mentors = [
     rating: 4.5,
     price: 10,
     skills: ["Career Guidance", "System Design", "Mock Interviews"],
-    img: "https://randomuser.me/api/portraits/men/1.jpg"
+    img: "https://randomuser.me/api/portraits/men/1.jpg",
+    active:true
   },
   {
     id:2,
@@ -23,7 +26,8 @@ const mentors = [
     rating: 4.6,
     price: 12,
     skills: ["DSA", "Career Guidance", "Resume Review"],
-    img: "https://randomuser.me/api/portraits/women/2.jpg"
+    img: "https://randomuser.me/api/portraits/women/2.jpg",
+    active:false
   },
 
   // 48 More 👇👇👇
@@ -38,7 +42,9 @@ const mentors = [
     rating: 4.7,
     price: 14,
     skills: ["Node.js", "Microservices", "System Design"],
-    img: "https://randomuser.me/api/portraits/men/3.jpg"
+    img: "https://randomuser.me/api/portraits/men/3.jpg",
+    active:true
+
   },
   {
     id:4,
@@ -51,7 +57,9 @@ const mentors = [
     rating: 4.8,
     price: 18,
     skills: ["UI/UX", "Design Systems", "Portfolio Review"],
-    img: "https://randomuser.me/api/portraits/women/4.jpg"
+    img: "https://randomuser.me/api/portraits/women/4.jpg",
+    active:false
+
   },
   {
     id:5,
@@ -64,7 +72,8 @@ const mentors = [
     rating: 4.9,
     price: 25,
     skills: ["Machine Learning", "NLP", "Research"],
-    img: "https://randomuser.me/api/portraits/men/5.jpg"
+    img: "https://randomuser.me/api/portraits/men/5.jpg",
+    active:false
   },
   {
     id:6,
@@ -77,7 +86,8 @@ const mentors = [
     rating: 4.4,
     price: 11,
     skills: ["Python", "Data Analytics", "ML Models"],
-    img: "https://randomuser.me/api/portraits/women/6.jpg"
+    img: "https://randomuser.me/api/portraits/women/6.jpg",
+    active:true
   },
   {
     id:7,
@@ -90,7 +100,8 @@ const mentors = [
     rating: 4.7,
     price: 20,
     skills: ["AWS", "Docker", "Kubernetes"],
-    img: "https://randomuser.me/api/portraits/men/7.jpg"
+    img: "https://randomuser.me/api/portraits/men/7.jpg",
+    active:false
   },
   {
     id:8,
@@ -103,7 +114,8 @@ const mentors = [
     rating: 4.5,
     price: 15,
     skills: ["React", "Next.js", "UI Engineering"],
-    img: "https://randomuser.me/api/portraits/women/8.jpg"
+    img: "https://randomuser.me/api/portraits/women/8.jpg",
+    active:false
   },
   {
     id:9,
@@ -116,7 +128,8 @@ const mentors = [
     rating: 4.3,
     price: 10,
     skills: ["Android", "Flutter", "Firebase"],
-    img: "https://randomuser.me/api/portraits/men/9.jpg"
+    img: "https://randomuser.me/api/portraits/men/9.jpg",
+    active:true
   },
   {
     id:10,
@@ -129,7 +142,8 @@ const mentors = [
     rating: 4.6,
     price: 22,
     skills: ["Network Security", "Risk Assessment", "Pentesting"],
-    img: "https://randomuser.me/api/portraits/women/10.jpg"
+    img: "https://randomuser.me/api/portraits/women/10.jpg",
+    active:false
   },
   {
     id:11,
@@ -142,7 +156,8 @@ const mentors = [
     rating: 4.7,
     price: 17,
     skills: ["GCP", "Terraform", "DevOps"],
-    img: "https://randomuser.me/api/portraits/men/11.jpg"
+    img: "https://randomuser.me/api/portraits/men/11.jpg",
+    active:false
   },
   {
     id:12,
@@ -155,12 +170,13 @@ const mentors = [
     rating: 4.4,
     price: 19,
     skills: ["Unity", "C#", "ARKit"],
-    img: "https://randomuser.me/api/portraits/women/12.jpg"
+    img: "https://randomuser.me/api/portraits/women/12.jpg",
+    active:true
   }
 ];
 
 
-const authors = [
+const authors: Author[] = [
   {
     name: "Amit Sharma",
     img: "https://randomuser.me/api/portraits/men/28.jpg",
@@ -193,7 +209,7 @@ const authors = [
   },
 ];
 
-const trending = [
+const trending: string[] = [
   "Mock Interviews",
   "Resume Review",
   "Career Guidance",
