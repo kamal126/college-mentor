@@ -7,7 +7,7 @@ function RightSidebar() {
   return (
     <div>
         <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
-          <h2 className="text-xl font-bold m-2">Top Authors</h2>
+          <h2 className="text-xl font-bold m-2">Top Mentors</h2>
           {authors.map((author, idx) => (
             <div key={idx} className="flex gap-2 m-4">
               <div className="">
@@ -16,7 +16,7 @@ function RightSidebar() {
                   alt=""
                   height={50}
                   width={50}
-                  className="rounded-full border border-green-700 border-2 bg-gray-500"
+                  className="rounded-full border-green-700 border-2 bg-gray-500"
                 />
               </div>
               <div className="">
