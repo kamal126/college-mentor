@@ -131,7 +131,7 @@ export default function Page() {
                   width={100}
                   className="absolute -bottom-1 left-3 z-10 w-11/12 -rotate-5"
                 />
-                <p className="inline relative z-20">Giedance</p>
+                <p className="inline relative z-20">Guidance</p>
               </span>
               <Sparkles
                 className="size-12 animate-pulse md:inline hidden"
@@ -154,7 +154,7 @@ export default function Page() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 mt-6"
           >
-            <Link href={"/sign-in"}>
+            <Link href={"/dashboard"}>
               <Button
                 size={"lg"}
                 className="rounded-full px-8 gap-2 text-lg group glow"
