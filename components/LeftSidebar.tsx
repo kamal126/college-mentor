@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 
 export default function LeftSidebar() {
   return (
-    <div className="w-full md:w-[250px] p-4 md:p-2 space-y-4">
+    <div className=" relative w-full  h-screen md:w-[250px] p-4 md:p-2 space-y-4">
 
       {/* Profile Card */}
       <div className="border rounded-2xl p-6 bg-white dark:bg-gray-900 shadow-sm">
@@ -37,24 +38,28 @@ export default function LeftSidebar() {
 
       {/* Navigation Menu */}
       <div className="border rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
-        {["Home", "Expert", "Wallet", "Join as Expert"].map((item, i) => (
+        {[["Home", "/dashboard"], ["Expert", "/dashboard/mentor"], ["Profile", "/dashboard/profile"],, ["Join as Expert","/dashboard/expert"]].map((item, i) => (
           <button
             key={i}
             className="w-full text-center p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition"
           >
-            {item}
+            <Link
+            href={item[1]}>
+            {item[0]}
+            </Link>
           </button>
         ))}
       </div>
 
       {/* Logout */}
-      <div className="border rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
+      <div className=" absolute bottom-0 w-64 border bottom-0 rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
         <Link
-          href="/"
+          href={"/"}
           className="block text-center w-full p-3 rounded-xl border border-red-500 text-red-600 font-medium
           hover:bg-red-600 hover:text-white transition"
         >
           Logout
+        <LogOut className="text-black inline"/>
         </Link>
       </div>
 
