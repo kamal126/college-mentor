@@ -2,8 +2,10 @@ import React from 'react'
 import Link from 'next/link'
 import { authors, trending } from '@/data/data'
 import { BadgeCheck, TrendingUp } from 'lucide-react'
+import { Mentor } from '@/lib/types'
+import TopMentor from './dashboard/TopMentor'
 
-function RightSidebar() {
+export default async function RightSidebar() {
   return (
     <div>
         <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
@@ -34,6 +36,8 @@ function RightSidebar() {
           ))}
         </div>
 
+        {/* <TopMentorsClient/> */}
+
         {/* top offering */}
         <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">
@@ -59,5 +63,3 @@ function RightSidebar() {
     </div>
   )
 }
-
-export default RightSidebar
