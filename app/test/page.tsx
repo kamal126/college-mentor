@@ -3,7 +3,6 @@
 import { useFormState } from "react-dom";
 import { createUser, State } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 const initialState: State = {
   errors: {},
@@ -12,6 +11,7 @@ const initialState: State = {
 
 export default function Page() {
   const [state, formAction] = useFormState(createUser, initialState);
+  
 
   return (
     <main className="flex flex-col w-full h-screen justify-center items-center bg-blue-100">
@@ -69,3 +69,18 @@ export default function Page() {
     </main>
   );
 }
+
+
+// ==================================================================================
+// ==================== -> right Sidebar <- =========================================
+// ================================================================================== 
+// import TopMentor from "@/components/dashboard/TopMentor";
+
+// export default function page() {
+//   return (
+//    <main>
+//     <TopMentor/>
+//    </main>
+//   )
+// }
+

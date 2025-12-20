@@ -2,13 +2,11 @@ import React from 'react'
 import Link from 'next/link'
 import { authors, trending } from '@/data/data'
 import { BadgeCheck, TrendingUp } from 'lucide-react'
-import { Mentor } from '@/lib/types'
-import TopMentor from './dashboard/TopMentor'
 
 export default async function RightSidebar() {
   return (
     <div>
-        <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
+        <div className="border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">Top Mentors</h2>
           {authors.map((author, idx) => (
             <div key={idx} className="flex gap-2 m-4">
@@ -39,7 +37,7 @@ export default async function RightSidebar() {
         {/* <TopMentorsClient/> */}
 
         {/* top offering */}
-        <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
+        <div className="border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">
             Top Offerings
             <TrendingUp

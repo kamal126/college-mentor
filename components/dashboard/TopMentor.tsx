@@ -9,7 +9,7 @@ export default async function TopMentor() {
   return (
     <>
       <div className="flex flex-col">
-        <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
+        <div className="border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">Top Mentors</h2>
           {/* {topMentor.map((m,i)=>(
         <p key={i} className="">{m.fullName}</p>
@@ -40,7 +40,7 @@ export default async function TopMentor() {
           ))}
         </div>
 
-        <div className="border border-2 rounded-lg m-2 p-2 dark:bg-black/50">
+        <div className="border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">
             Top Offerings
             <TrendingUp
