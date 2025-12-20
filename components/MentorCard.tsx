@@ -4,86 +4,18 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Separator } from "@radix-ui/react-select";
 import clsx from "clsx";
-
-interface Mentor{
-    id: number;
-    name: string;
-    title: string;
-    company: string;
-    companies: string[];
-    experience: number;
-    bio: string;
-    rating: number;
-    price: number;
-    skills: string[];
-    img: string;
-    active: boolean;
-}
+import { Mentor } from "@/lib/types";
 
 
 export default function MentorCard({mentor}:{mentor:Mentor}){
   return(
-    // <main>
-    //   <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] md:grid-cols-2 bg-gray-200 mt-2 text-center p-5 rounded-xl">
-    //     {/* right part */}
-    //     <div className="grid grid-cols-1 text-center md:text-start">
-    //       {/* left upper */}
-    //       <div className="grid grid-cols-1 md:grid-cols-2 ">
-    //         <div className="">
-    //           {/* <Image src={'/assets/b.jpg'}
-    //           width={16}
-    //           height={30}
-    //           alt="picture"
-    //           className="h-16 w-16 mx-auto border-black border-2 object-cover bg-gray-400 rounded-full"></Image> */}
-    //           <img alt={mentor.name} loading="lazy"  src="/assets/b.jpg"
-    //           className={clsx(
-    //             "h-16 w-16 mx-auto border-black border-2 object-top object-cover bg-gray-400 rounded-full",
-    //             {
-    //               "border-green-700 border-3": mentor.active
-    //             }
-    //           )}></img>
-    //         </div>
-    //         <div className="">
-    //           <p className="font-bold">{mentor.name}</p>
-    //           <p className="font-medium">{mentor.title} @{mentor.company}</p>
-    //           <p className="font-medium text-orange-700">{mentor.experience} year+ Exp.</p>
-    //           {/* <p className="font-semibold">{mentor.companies.join(', ')}</p> */}
-    //         </div>
-    //       </div>
-    //       {/* left lower */}
-    //       <div className="">
-    //         <p className="font-semibold">{mentor.companies.join(', ')}</p>
-    //         <p className="mt-2 lg:hidden">{mentor.bio}</p>
-    //         <p className="hidden lg:block lg:mt-2">{mentor.bio.slice(0,50)}...</p>
-    //         {/* <span className="bg-gray-300 p-1 rounded-xl">{mentor.skills[0]}</span>
-    //         <span className="bg-gray-300 p-1 rounded-xl mx-2">{mentor.skills[0]}</span> */}
-            
-    //       </div>
-    //     </div>
-
-        
-    //     {/* left part */}
-    //     <div className="grid grid-cols-1 gap-2">
-    //       <div className="rating p-2">
-    //         <span className="bg-gray-300 p-1 rounded-xl">{mentor.skills[0]}</span>
-    //         <span className="bg-gray-300 p-1 rounded-xl mx-2">{mentor.skills[1]}</span>
-    //         <p className="bg-white font-medium p-2 mt-2">Rating: {mentor.rating} | Price: ${mentor.price}/min</p>
-    //       </div>
-    //       <div className="btn1">
-    //         <button type="button" className="bg-yellow-700 p-2 cursor-pointer hover:bg-yellow-900 rounded-xl text-white mt-2">View Profile</button>
-    //         <button type="button" className="bg-yellow-700 p-2 cursor-pointer hover:bg-yellow-900 rounded-xl text-white mt-2 mx-2">View Profile</button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </main>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_300px] bg-gray-200 mt-2 p-5 rounded-xl">
-      
+    <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_300px] bg-gray-200 mt-2 p-5 rounded-xl">
       {/* Left */}
       <div>
         <div className="flex gap-4 items-center">
           <img
             src={'/assets/b.jpg'}
-            alt={mentor.name}
+            alt={mentor.fullName}
             // width={64}
             // height={64}
             className={clsx(
@@ -93,7 +25,7 @@ export default function MentorCard({mentor}:{mentor:Mentor}){
           />
 
           <div>
-            <p className="font-bold">{mentor.name}</p>
+            <p className="font-bold">{mentor.fullName}</p>
             <p className="font-medium">
               {mentor.title} @{mentor.company}
             </p>
@@ -118,7 +50,7 @@ export default function MentorCard({mentor}:{mentor:Mentor}){
       {/* Right */}
       <div className="mt-4 lg:mt-0">
         <div className="flex gap-2 flex-wrap">
-          {mentor.skills.slice(0, 2).map((skill) => (
+          {mentor.skills?.slice(0, 2).map((skill) => (
             <span key={skill} className="bg-gray-300 p-1 rounded-xl">
               {skill}
             </span>
