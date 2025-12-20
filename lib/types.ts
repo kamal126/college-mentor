@@ -1,6 +1,7 @@
 export interface Mentor {
-  _id: string;
-  name: string;
+  id: string | number;
+  fullName: string;
+  title:string;
   company: string;
   companies: string[];
   experience: number;
@@ -9,7 +10,7 @@ export interface Mentor {
   active: boolean;
   rating?: number;
   skills?: string[];
-  avatar?: string;
+  avater?: string;
 }
 
 
