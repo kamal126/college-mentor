@@ -7,7 +7,7 @@ export default async function Cards({query, page}:{query:string; page:number}) {
   return (
     <div className="">
       {mentors.map((mentor)=>(
-        <MentorCard key={mentor.id} mentor={mentor}/>
+        <MentorCard key={mentor._id} mentor={mentor}/>
       ))}
     </div>
   )
