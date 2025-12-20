@@ -5,7 +5,7 @@ import { ArrowUpRight, AwardIcon, BookOpenTextIcon, RadarIcon, TargetIcon, Trend
 export default function page() {
   return (
     <main>
-      {/* <Breadcrumbs breadcrumbs={[{ label: "Home", href: "/dashboard", active:true }]} /> */}
+      <Breadcrumbs breadcrumbs={[{ label: "Home", href: "/dashboard", active:true }]} />
       <div className="p-6 md:p-8 border-b border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto">
           <div style={{ opacity: 1, transform: "none" }}>

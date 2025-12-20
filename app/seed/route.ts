@@ -43,7 +43,7 @@ async function seedMentors() {
       rating: mentor.rating,
       price: mentor.price,
       skills: mentor.skills,
-      avatar: mentor.avater,
+      avatar: mentor.avatar,
       isActive: mentor.active,
     });
 

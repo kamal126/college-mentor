@@ -1,6 +1,6 @@
 "use client";
 
-import { Replace, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 
@@ -29,32 +29,8 @@ export default function SearchBar({placeholder}: {placeholder: string}) {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  // function handleSearch(term:string) {
-    // console.log('Searching... ',term);
-  //   const params = new URLSearchParams(searchparams);
-  //   params.set('page','1');
-  //   if(term){
-  //     params.set('query', term);
-  //   }else{
-  //     params.delete('query');
-  //   }
-  //   replace(`${pathname}?${params.toString()}`);
-  // }
-
   return (
-    // <div className="max-w-xl mx-auto sticky top-0 bg-gray-300 rounded-full px-4 py-2 flex items-center gap-3">
-    //   <input
-    //     type="text"
-    //     placeholder="Search mentors..."
-    //     maxLength={200}
-    //     value={query}
-    //     onChange={(e) => setQuery(e.target.value)}
-    //     onKeyDown={(e) => e.key === "Enter" && onSearch()}
-    //     className="flex-1 bg-transparent outline-none px-2"
-    //   />
-    //   <SearchIcon/>
-    // </div>
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className="relative flex flex-1 shrink-0">
       <label htmlFor="search" className="sr-only">
         Search
       </label>

@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
 import LeftSidebar from "@/components/LeftSidebar"
-import RightSidebar from "@/components/RightSidebar"
+// import RightSidebar from "@/components/RightSidebar"
 import { Toaster } from "@/components/ui/sonner";
 // import { motion as mt } from "framer-motion";
-import TopMentor from "@/components/dashboard/TopMentor";
+import TopMentor from "@/components/dashboard/TopMentor"; // right side bar
 
 
 export default async function layout({children}: { children: ReactNode}) {

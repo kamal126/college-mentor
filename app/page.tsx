@@ -157,7 +157,7 @@ export default function Page() {
             <Link href={"/dashboard"}>
               <Button
                 size={"lg"}
-                className="rounded-full px-8 gap-2 text-lg group glow"
+                className="rounded-full px-8 gap-2 text-lg group glow cursor-pointer"
               >
                 Get Start
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />

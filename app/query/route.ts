@@ -1,18 +1,17 @@
 import { User, Mentor } from "@/models/user.model";
 import connectDB from "@/lib/connectDB";
 
-connectDB();
 async function mentors() {
-    const mentors = await Mentor.find();
-
-    return mentors;
+    await connectDB(); // 👈 yahin hona chahiye
+    return Mentor.find();
 }
 
 export async function GET() {
   try {
-
-    return Response.json(await mentors());
+    const data = await mentors();
+    return Response.json(data);
   } catch (error) {
-    return Response.json({ error: "seed failed" }, { status: 500 });
+    console.error(error);
+    return Response.json({ error: "failed" }, { status: 500 });
   }
 }

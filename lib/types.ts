@@ -10,7 +10,7 @@ export interface Mentor {
   active: boolean;
   rating?: number;
   skills?: string[];
-  avater?: string;
+  avatar?: string;
 }
 
 

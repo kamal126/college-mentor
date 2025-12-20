@@ -1,9 +1,6 @@
-import { mentors } from "@/data/data";
 import SearchBar from "@/components/SearchBar";
 import Cards from "@/components/mentor/Cards";
 import { lusitana } from "@/components/font";
-import MentorCard from "@/components/MentorCard";
-import { toast } from "sonner";
 import { Suspense } from "react";
 import { MentorCardSkeleton } from "@/components/ui/skeleton";
 

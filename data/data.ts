@@ -3,7 +3,7 @@ import { Mentor, Author } from "@/lib/types";
 const mentors: Mentor[] = [
   {
     id:1,
-    name: "Rahul Verma",
+    fullName: "Rahul Verma",
     title: "Tech Mentor",
     company: "Google",
     companies: ["Microsoft", "Google", "Amazon", "Facebook"],
@@ -12,12 +12,12 @@ const mentors: Mentor[] = [
     rating: 4.5,
     price: 10,
     skills: ["Career Guidance", "System Design", "Mock Interviews"],
-    img: "https://randomuser.me/api/portraits/men/1.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     active:true
   },
   {
     id:2,
-    name: "Shruti Singh",
+    fullName: "Shruti Singh",
     title: "SDE",
     company: "Microsoft",
     companies: ["Microsoft", "Amazon", "Flipkart"],
@@ -26,14 +26,14 @@ const mentors: Mentor[] = [
     rating: 4.6,
     price: 12,
     skills: ["DSA", "Career Guidance", "Resume Review"],
-    img: "https://randomuser.me/api/portraits/women/2.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     active:false
   },
 
   // 48 More 👇👇👇
   {
     id:3,
-    name: "Arjun Mehta",
+    fullName: "Arjun Mehta",
     title: "Backend Engineer",
     company: "Amazon",
     companies: ["Amazon", "Swiggy"],
@@ -42,13 +42,13 @@ const mentors: Mentor[] = [
     rating: 4.7,
     price: 14,
     skills: ["Node.js", "Microservices", "System Design"],
-    img: "https://randomuser.me/api/portraits/men/3.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     active:true
 
   },
   {
     id:4,
-    name: "Neha Gupta",
+    fullName: "Neha Gupta",
     title: "Product Designer",
     company: "Spotify",
     companies: ["Spotify", "Zomato"],
@@ -57,13 +57,13 @@ const mentors: Mentor[] = [
     rating: 4.8,
     price: 18,
     skills: ["UI/UX", "Design Systems", "Portfolio Review"],
-    img: "https://randomuser.me/api/portraits/women/4.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/4.jpg",
     active:false
 
   },
   {
     id:5,
-    name: "Aditya Sharma",
+    fullName: "Aditya Sharma",
     title: "AI Researcher",
     company: "OpenAI",
     companies: ["OpenAI", "DeepMind"],
@@ -72,12 +72,12 @@ const mentors: Mentor[] = [
     rating: 4.9,
     price: 25,
     skills: ["Machine Learning", "NLP", "Research"],
-    img: "https://randomuser.me/api/portraits/men/5.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
     active:false
   },
   {
     id:6,
-    name: "Priya Nair",
+    fullName: "Priya Nair",
     title: "Data Scientist",
     company: "IBM",
     companies: ["IBM", "TCS"],
@@ -86,12 +86,12 @@ const mentors: Mentor[] = [
     rating: 4.4,
     price: 11,
     skills: ["Python", "Data Analytics", "ML Models"],
-    img: "https://randomuser.me/api/portraits/women/6.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/6.jpg",
     active:true
   },
   {
     id:7,
-    name: "Kabir Khan",
+    fullName: "Kabir Khan",
     title: "DevOps Engineer",
     company: "Netflix",
     companies: ["Netflix", "Oracle"],
@@ -100,12 +100,12 @@ const mentors: Mentor[] = [
     rating: 4.7,
     price: 20,
     skills: ["AWS", "Docker", "Kubernetes"],
-    img: "https://randomuser.me/api/portraits/men/7.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/7.jpg",
     active:false
   },
   {
     id:8,
-    name: "Ananya Das",
+    fullName: "Ananya Das",
     title: "Frontend Developer",
     company: "Meta",
     companies: ["Meta", "Udaan"],
@@ -114,12 +114,12 @@ const mentors: Mentor[] = [
     rating: 4.5,
     price: 15,
     skills: ["React", "Next.js", "UI Engineering"],
-    img: "https://randomuser.me/api/portraits/women/8.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/8.jpg",
     active:false
   },
   {
     id:9,
-    name: "Rohan Gupta",
+    fullName: "Rohan Gupta",
     title: "Mobile App Engineer",
     company: "Swiggy",
     companies: ["Swiggy", "PhonePe"],
@@ -128,12 +128,12 @@ const mentors: Mentor[] = [
     rating: 4.3,
     price: 10,
     skills: ["Android", "Flutter", "Firebase"],
-    img: "https://randomuser.me/api/portraits/men/9.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/9.jpg",
     active:true
   },
   {
     id:10,
-    name: "Simran Kaur",
+    fullName: "Simran Kaur",
     title: "Cyber Security Analyst",
     company: "Cisco",
     companies: ["Cisco", "Infosys"],
@@ -142,12 +142,12 @@ const mentors: Mentor[] = [
     rating: 4.6,
     price: 22,
     skills: ["Network Security", "Risk Assessment", "Pentesting"],
-    img: "https://randomuser.me/api/portraits/women/10.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/10.jpg",
     active:false
   },
   {
     id:11,
-    name: "Aman Chowdhury",
+    fullName: "Aman Chowdhury",
     title: "Cloud Engineer",
     company: "Google",
     companies: ["Google", "Nutanix"],
@@ -156,12 +156,12 @@ const mentors: Mentor[] = [
     rating: 4.7,
     price: 17,
     skills: ["GCP", "Terraform", "DevOps"],
-    img: "https://randomuser.me/api/portraits/men/11.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/11.jpg",
     active:false
   },
   {
     id:12,
-    name: "Tanvi Patel",
+    fullName: "Tanvi Patel",
     title: "AR/VR Developer",
     company: "Apple",
     companies: ["Apple"],
@@ -170,7 +170,7 @@ const mentors: Mentor[] = [
     rating: 4.4,
     price: 19,
     skills: ["Unity", "C#", "ARKit"],
-    img: "https://randomuser.me/api/portraits/women/12.jpg",
+    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
     active:true
   }
 ];
@@ -178,32 +178,32 @@ const mentors: Mentor[] = [
 
 const authors: Author[] = [
   {
-    name: "Amit Sharma",
-    img: "https://randomuser.me/api/portraits/men/28.jpg",
+    fullName: "Amit Sharma",
+    avatar: "https://randomuser.me/api/portraits/men/28.jpg",
     role: "Data Scientist",
     online: true,
   },
   {
-    name: "Neha Gupta",
-    img: "https://randomuser.me/api/portraits/women/45.jpg",
+    fullName: "Neha Gupta",
+    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
   {
-    name: "Neha Gupta",
-    img: "https://randomuser.me/api/portraits/women/45.jpg",
+    fullName: "Neha Gupta",
+    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
   {
-    name: "Neha Gupta",
-    img: "https://randomuser.me/api/portraits/women/45.jpg",
+    fullName: "Neha Gupta",
+    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
   {
-    name: "Neha Gupta",
-    img: "https://randomuser.me/api/portraits/women/45.jpg",
+    fullName: "Neha Gupta",
+    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
@@ -219,4 +219,8 @@ const trending: string[] = [
 ];
 
 
-export {mentors, authors, trending};
+export {
+    mentors, 
+    authors, 
+    trending
+};

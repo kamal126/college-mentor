@@ -1,11 +1,9 @@
 import Form from "@/components/expert/create-form";
 import Breadcrumbs from "@/components/expert/breadcrumbs";
-import { fetchUsers, fetchUserById } from "@/lib/data";
-import { User } from "@/models/user.model";
+// import { fetchUsers, fetchUserById } from "@/lib/data";
+// import { User } from "@/models/user.model";
 
 export default async function Page() {
-  // const user = await fetchUserById("1");
-  // const user = await User.find()
   return (
     <main>
       <Breadcrumbs
@@ -17,4 +15,5 @@ export default async function Page() {
       <Form/>
     </main>
   );
+  
 }

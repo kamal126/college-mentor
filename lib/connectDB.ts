@@ -1,7 +1,14 @@
+'use server';
+
 import mongoose, { Mongoose } from "mongoose";
 
-const MONGODB_URI =
-  process.env.DATABASE_URL + process.env.DATABASE_NAME;
+
+if (!process.env.DATABASE_URL || !process.env.DATABASE_NAME) {
+  throw new Error("DATABASE_URL or DATABASE_NAME missing");
+}
+
+const MONGODB_URI = `${process.env.DATABASE_URL}${process.env.DATABASE_NAME}`;
+
 
 if(!MONGODB_URI){
     throw new Error("Please define DATABASE_URI and DATABASE_NAME in .env");
