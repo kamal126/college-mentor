@@ -1,6 +1,8 @@
 import { User } from "@/models/user.model";
 import connectDB from "@/lib/connectDB";
-import { mentors } from "@/data/data";
+// import { mentors } from "@/data/data";
+import { Mentor } from "@/models/user.model";
+
 
 export async function fetchUsers() {
   try {
@@ -19,23 +21,27 @@ export async function fetchUsers() {
 }
 
 export async function fetchFilteredMentors(query: string, page: number) {
+  await connectDB();
+
   const ITEMS_PER_PAGE = 10;
+  const skip = (page - 1) * ITEMS_PER_PAGE;
 
-  const filtered = mentors.filter((mentor) =>
-    mentor.name.toLowerCase().includes(query.toLowerCase())
-  );
+  const mentors = await Mentor.find({
+    fullName: { $regex: query, $options: "i" }, // case-insensitive search
+  })
+    .sort({ fullName: 1 })
+    .skip(skip)
+    .limit(ITEMS_PER_PAGE)
+    .lean();
 
-  return filtered.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  return mentors;
 }
 
 export async function fetchUserById(userId: string) {
   await connectDB();
 
   const user = await User.findById(userId)
-    .select("_id name company experience price bio companies")
+    .select("_id fullName company experience price bio companies")
     .lean();
 
   if (!user) throw new Error("User not found");
@@ -51,3 +57,15 @@ export async function fetchUserById(userId: string) {
     active: true,
   };
 }
+
+
+export async function fetchTopMentor() {
+  const topMentors = await Mentor
+    .find({})
+    .sort({ rating: -1 })
+    .limit(5)
+    .lean();
+
+  return topMentors;
+}
+
