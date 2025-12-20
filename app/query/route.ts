@@ -1,28 +1,18 @@
-import { mentors, authors, trending } from "@/data/data";
-import { User } from "@/models/user.model";
+import { User, Mentor } from "@/models/user.model";
+import connectDB from "@/lib/connectDB";
 
-async function listUser() {
-    const data = mentors.filter((m) => m.active  === true);
+connectDB();
+async function mentors() {
+    const mentors = await Mentor.find();
 
-    return data;
-}
-
-async function tempUser() {
-  const data = await User.find();
-
-  return data;
+    return mentors;
 }
 
 export async function GET() {
-//   return Response.json({
-//     message:
-//       'Uncomment this file and remove this line. You can delete this file when you are finished.',
-//   });
   try {
-  	return Response.json(await tempUser());
+
+    return Response.json(await mentors());
   } catch (error) {
-  	return Response.json({ error }, { status: 500 });
+    return Response.json({ error: "seed failed" }, { status: 500 });
   }
 }
-
-
