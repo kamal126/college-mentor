@@ -114,9 +114,9 @@ export async function createUser(
   const hashPassword = await bcrypt.hash(validated.data.password, 10);
 
   await User.create({...validated.data, password: hashPassword,});
-
-
+  
   console.log("User created successfully");
+  
   redirect("/query");
   
 }
