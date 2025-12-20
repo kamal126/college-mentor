@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model } from "mongoose";
+import mongoose, { Schema, Types, Model } from "mongoose";
 
 export interface IUser {
   username: string;
@@ -9,18 +9,27 @@ export interface IUser {
 }
 
 export interface IExpert {
-  user: mongoose.Types.ObjectId;
+  user: Types.ObjectId;
+
   fullName: string;
   title: string;
   company: string;
   companies: string[];
-  experience: number;
+
+  experience: number; // years
   bio: string;
-  rating: number;
-  price: number;
+
+  rating: number; // 0 - 5
+  price: number; // per session
+
   skills: string[];
   avatar: string;
+
+  isActive?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
 
 const userSchema = new Schema<IUser>(
   {
@@ -35,29 +44,47 @@ const userSchema = new Schema<IUser>(
 
 const expertSchema = new Schema<IExpert>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
 
-    fullName: { type: String, required: true },
-    title: { type: String, required: true, lowercase: true },
-    company: { type: String, required: true, lowercase: true },
+    fullName: { type: String, required: true, trim: true },
+
+    title: { type: String, required: true, trim: true },
+
+    company: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
 
     companies: {
       type: [String],
-      required: true,
+      validate: [(v: string[]) => v.length > 0, "Companies required"],
     },
 
-    experience: { type: Number, required: true, default: 0 },
+    experience: { type: Number, min: 0, default: 0 },
+
     bio: { type: String, required: true },
 
-    rating: { type: Number, default: 0 },
-    price: { type: Number, default: 0 },
+    rating: { type: Number, min: 0, max: 5, default: 0 },
+
+    price: { type: Number, min: 0, default: 0 },
 
     skills: {
       type: [String],
       required: true,
+      validate: [(v: string[]) => v.length > 0, "Skills required"],
+      index: true,
     },
 
     avatar: { type: String, default: "/assets/logo.png" },
+
+    isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
