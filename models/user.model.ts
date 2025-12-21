@@ -6,6 +6,10 @@ export interface IUser {
   fullName: string;
   avatar: string;
   password: string;
+  forgetPasswordToken: string;
+  forgetPasswordTokenExpiry:Date;
+  verifyToken: string;
+  verifyTokenExpiry: Date;
 }
 
 export interface IExpert {
@@ -38,6 +42,11 @@ const userSchema = new Schema<IUser>(
     fullName: { type: String, required: true, trim: true },
     avatar: { type: String, default: "/assets/logo.png" },
     password: { type: String, required: true },
+    forgetPasswordToken: String,
+    forgetPasswordTokenExpiry: Date,
+    verifyToken: String,
+    verifyTokenExpiry: Date,
+
   },
   { timestamps: true }
 );
