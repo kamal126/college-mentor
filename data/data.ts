@@ -199,7 +199,7 @@ const authors: Author[] = [
     fullName: "Neha Gupta",
     avatar: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
-    online: false,
+    online: true,
   },
   {
     fullName: "Neha Gupta",
