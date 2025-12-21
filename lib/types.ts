@@ -15,8 +15,8 @@ export interface Mentor {
 
 
 export type Author = {
-  name: string;
-  img: string;
+  fullName: string;
+  avatar: string;
   role: string;
   online: boolean;
 }
