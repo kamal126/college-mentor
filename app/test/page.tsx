@@ -12,7 +12,6 @@ const initialState: State = {
 export default function Page() {
   const [state, formAction] = useFormState(createUser, initialState);
   
-
   return (
     <main className="flex flex-col w-full h-screen justify-center items-center bg-blue-100">
       <div className="border-2 border-slate-300 p-10 rounded-lg">
