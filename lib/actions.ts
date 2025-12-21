@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { User } from "@/models/user.model";
 import bcrypt from "bcryptjs"
+import { NextResponse } from "next/server";
 
 const FormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -113,10 +114,15 @@ export async function createUser(
 
   const hashPassword = await bcrypt.hash(validated.data.password, 10);
 
-  await User.create({...validated.data, password: hashPassword,});
+  const newuser = await User.create({...validated.data, password: hashPassword,});
+
+  if(!newuser){
+    
+  }
   
   console.log("User created successfully");
   
   redirect("/query");
   
 }
+
