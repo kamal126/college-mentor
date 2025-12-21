@@ -5,7 +5,7 @@ import connectDB from "./connectDB";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { User } from "@/models/user.model";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 const FormSchema = z.object({
@@ -33,7 +33,6 @@ export async function createExpert(
   prevState: State,
   formData: FormData
 ): Promise<State> {
-
   await connectDB(); // ✅ correct place
 
   const validatedFields = CreateExpert.safeParse({
@@ -61,7 +60,6 @@ export async function createExpert(
   try {
     // ✅ Example DB insert
     await User.create(data);
-
   } catch (error) {
     console.error(error);
     return {
@@ -102,27 +100,91 @@ export async function createUser(
     };
   }
 
-  const {username} = validated.data;
+  const { username } = validated.data;
 
-  const hasUser = await User.findOne({username});
+  const hasUser = await User.findOne({ username });
 
-  if(hasUser){
-    return{
-      message: "User Already exist"
-    }
+  if (hasUser) {
+    return {
+      message: "User Already exist",
+    };
   }
 
   const hashPassword = await bcrypt.hash(validated.data.password, 10);
 
-  const newuser = await User.create({...validated.data, password: hashPassword,});
+  const newuser = await User.create({
+    ...validated.data,
+    password: hashPassword,
+  });
 
-  if(!newuser){
-    
+  if (!newuser) {
   }
-  
+
   console.log("User created successfully");
-  
+
   redirect("/query");
-  
 }
 
+
+// =============================================================
+const LoginFormSchema = z.object({
+  username: z.string().min(3, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+export async function login(
+  prevState: State,
+  formData: FormData
+):Promise<State>
+{
+  await connectDB();
+
+  const validated = LoginFormSchema.safeParse({
+    username: formData.get("username"),
+    password: formData.get("password"),
+  });
+
+  if (!validated.success) {
+    return {
+      errors: validated.error.flatten().fieldErrors,
+      message: "Invalid fields all fileds check now!",
+    };
+  }
+
+  const { username, password } = validated.data;
+
+  const user = await User.findOne({
+    $or: [{ username }, { email: username }],
+  });
+
+  if (!user) {
+    return {
+      message:
+        "user not founded! Please check your username/email or Sign up now!",
+    };
+  }
+
+  const checkPassword = await bcrypt.compare(password, user.password);
+
+  if (!checkPassword) return { message: "password doen't matched..." };
+
+  // create token
+  const token = {
+    id: user._id,
+    username: user.username,
+  };
+
+  const response = NextResponse.json({
+    message: "Login Successfull",
+    success: true,
+    status: 200,
+  });
+
+  response.cookies.set("token", token, {httpOnly:true});
+
+  return {
+    message: `user Login Successfully ${user.username +' | '+user.email}`
+    
+  }
+  // hrh@gmail.com  | 123456
+}
