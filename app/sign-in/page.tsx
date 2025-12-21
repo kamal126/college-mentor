@@ -1,8 +1,10 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { createUser, State } from "@/lib/actions";
+import { login, State } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
+import clsx from "clsx";
+import { lusitana } from "@/components/font";
 
 const initialState: State = {
   errors: {},
@@ -13,7 +15,8 @@ const initialState: State = {
 
 
 export default function Page() {
-  const [state, formAction] = useFormState(createUser, initialState);
+  // const [state, formAction] = useFormState(login, initialState);
+  const [state, formAction] = useFormState(login, initialState);
   
   return (
     <main className="flex flex-col w-full h-screen justify-center items-center bg-blue-100">
@@ -25,13 +28,13 @@ export default function Page() {
 
           <label>Username / Email:</label>
           <input
-            name="fullName"
-            className="border-2 border-slate-300 rounded-sm p-1 capitalize"
+            name="username"
+            className="border-2 border-slate-300 rounded-sm p-1"
             placeholder="username / email"
           />
 
-          {state.errors?.fullName && (
-            <p className="text-red-500">{state.errors.fullName[0]}</p>
+          {state?.errors?.username && (
+            <p className="text-red-500">{state.errors.username[0]}</p>
           )}
 
           <label>Password:</label>
@@ -42,17 +45,9 @@ export default function Page() {
             placeholder="******"
           />
 
+          <Button type="submit" className={clsx(lusitana, "text-xl bg-blue-600 hover:bg-blue-500 cursor-pointer capitalize")}>sign in</Button>
 
-          {/* <label>Avatar</label>
-          <input
-            type="file"
-            name="avatar"
-            className="border-2 border-slate-300 rounded-sm p-1 lowercase"
-          /> */}
-
-          <Button type="submit">sign in</Button>
-
-          {state.message && <p className="text-red-500">{state.message}</p>}
+          {state?.message && <p className="text-red-500">{state.message}</p>}
         </form>
       </div>
     </main>
