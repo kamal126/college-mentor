@@ -1,4 +1,5 @@
 import mongoose, { Schema, Types, Model } from "mongoose";
+import { Jwt } from "jsonwebtoken";
 
 export interface IUser {
   username: string;
@@ -6,29 +7,26 @@ export interface IUser {
   fullName: string;
   avatar: string;
   password: string;
-  forgetPasswordToken: string;
-  forgetPasswordTokenExpiry:Date;
-  verifyToken: string;
-  verifyTokenExpiry: Date;
+  isMentor:boolean;
+  refershToken:string;
+  // forgetPasswordToken?: string;
+  // forgetPasswordTokenExpiry?:Date;
+  // verifyToken?: string;
+  // verifyTokenExpiry?: Date;
 }
 
 export interface IExpert {
   user: Types.ObjectId;
-
   fullName: string;
   title: string;
   company: string;
   companies: string[];
-
   experience: number; // years
   bio: string;
-
   rating: number; // 0 - 5
   price: number; // per session
-
   skills: string[];
   avatar: string;
-
   isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -42,10 +40,12 @@ const userSchema = new Schema<IUser>(
     fullName: { type: String, required: true, trim: true },
     avatar: { type: String, default: "/assets/logo.png" },
     password: { type: String, required: true },
-    forgetPasswordToken: String,
-    forgetPasswordTokenExpiry: Date,
-    verifyToken: String,
-    verifyTokenExpiry: Date,
+    isMentor: {type:Boolean, default:false},
+    refershToken: {type: String}
+    // forgetPasswordToken: String,
+    // forgetPasswordTokenExpiry: Date,
+    // verifyToken: String,
+    // verifyTokenExpiry: Date,
 
   },
   { timestamps: true }
@@ -58,6 +58,7 @@ const expertSchema = new Schema<IExpert>(
       ref: "User",
       required: true,
       unique: true,
+      index: true
     },
 
     fullName: { type: String, required: true, trim: true },
@@ -79,8 +80,6 @@ const expertSchema = new Schema<IExpert>(
     experience: { type: Number, min: 0, default: 0 },
 
     bio: { type: String, required: true },
-
-    rating: { type: Number, min: 0, max: 5, default: 0 },
 
     price: { type: Number, min: 0, default: 0 },
 
