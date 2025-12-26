@@ -5,10 +5,15 @@ async function mentors() {
     await connectDB(); // 👈 yahin hona chahiye
     return Mentor.find();
 }
+async function users() {
+    await connectDB(); // 👈 yahin hona chahiye
+    return User.find();
+}
 
 export async function GET() {
   try {
-    const data = await mentors();
+    // const data = await mentors();
+    const data = await users();
     return Response.json(data);
   } catch (error) {
     console.error(error);
