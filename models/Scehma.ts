@@ -21,5 +21,4 @@ export const expertSchema = z.object({
 
   active: z.boolean().default(true),
 });
-
 export type Expert = z.infer<typeof expertSchema>;
