@@ -4,48 +4,46 @@ import { z } from "zod";
 import connectDB from "./connectDB";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { User } from "@/models/user.model";
+import { Mentor, User } from "@/models/user.model";
 import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
+import { uploadOnCloudinary } from "./cloudinary";
+import path from "path";
+import { writeFile } from "fs/promises";
+import fs from 'fs/promises';
+import os from 'os'
+
 
 const FormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  company: z.string().min(1),
-  companies: z.array(z.string()).min(1),
+  fullName: z.string().min(1, "Name required"),
+  title: z.string().min(1, "Title required"),
+  company: z.string().min(1, "company name is required"),
+  companies: z.array(z.string()).min(1, "aAt least one company"),
   experience: z.coerce.number().min(0),
   bio: z.string().min(1),
-  rating: z.coerce.number().min(0).max(5),
   price: z.coerce.number().min(0),
-  skills: z.array(z.string()).min(1),
-  avatar: z.string().url(),
-  status: z.coerce.boolean(),
-  date: z.string(),
+  skills: z.array(z.string()).min(1, "At least one skill"),
 });
 
 export type State = {
   errors?: Record<string, string[]>;
   message?: string | null;
 };
-
-const CreateExpert = FormSchema.omit({ id: true, date: true });
-
+// const CreateExpert = FormSchema.omit({ id: true, date: true });
 export async function createExpert(
   prevState: State,
   formData: FormData
 ): Promise<State> {
-  await connectDB(); // ✅ correct place
+  await connectDB();
 
-  const validatedFields = CreateExpert.safeParse({
-    name: formData.get("name"),
+  const validatedFields = FormSchema.safeParse({
+    fullName: formData.get("fullName"),
+    title: formData.get("title"),
     company: formData.get("company"),
     companies: formData.getAll("companies"),
     experience: formData.get("experience"),
     bio: formData.get("bio"),
-    rating: formData.get("rating"),
     price: formData.get("price"),
     skills: formData.getAll("skills"),
-    avatar: formData.get("avatar"), // ✅ FIXED
-    status: formData.get("status"),
   });
 
   if (!validatedFields.success) {
@@ -57,27 +55,58 @@ export async function createExpert(
 
   const data = validatedFields.data;
 
-  try {
-    // ✅ Example DB insert
-    await User.create(data);
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Database Error: Failed to Create Expert.",
-    };
+  const session = await auth();
+
+  if (!session?.user) {
+    return { message: "Unauthorized" };
   }
 
-  console.log(formData);
+  const user = await User.findOne({ email: session?.user.email });
+
+  const mentor = await Mentor.findOne({ user: user?._id });
+  if (mentor) {
+    return { message: "You'r alredy Joined..." };
+  }
+
+  console.log(user);
+  console.log(data);
+
+  const expert = {
+    user: user?._id, // ✅ MATCHES SCHEMA
+    fullName: user?.fullName,
+    title: data.title,
+    company: data.company,
+    companies: data.companies,
+    experience: data.experience,
+    bio: data.bio,
+    price: data.price,
+    skills: data.skills,
+    avatar: user?.avatar,
+  };
+
+  await Mentor.create(expert);
+
+  // (await cookies()).set("mentor","true",{
+  //   httpOnly:true
+  // });
+  await user?.updateOne({isMentor:true});
+
+  console.log(data);
+  console.log(user);
 
   revalidatePath("/dashboard/mentor");
   redirect("/dashboard/mentor");
 }
+// =====================================
+// =====================================
+// =====================================
 
 const userSchema = z.object({
   username: z.string().min(3, "Username is required"),
   fullName: z.string().min(3, "Full name is required"),
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  avatar: z.any().optional().nullable(),
 });
 
 export async function createUser(
@@ -91,6 +120,7 @@ export async function createUser(
     fullName: formData.get("fullName"),
     email: formData.get("email"),
     password: formData.get("password"),
+    avatar: formData.get("avatar") as File | null
   });
 
   if (!validated.success) {
@@ -100,7 +130,7 @@ export async function createUser(
     };
   }
 
-  const { username } = validated.data;
+  const { username, avatar, password } = validated.data;
 
   const hasUser = await User.findOne({ username });
 
@@ -112,12 +142,55 @@ export async function createUser(
 
   const hashPassword = await bcrypt.hash(validated.data.password, 10);
 
+  let avatarUrl = "";
+
+  if(avatar && avatar.size>0){
+    // server side valdatation
+    if(!["image/jpeg", "image/png", "image/webp"].includes(avatar.type)){
+      return {message: "Invalid image format."}
+    }
+
+    if(avatar.size > 2*1024*1024){
+      return {message: `Avatar too large ${avatar.size} accepable (max 2MB)`};
+    }
+
+    // convert file buffer
+    const bytes = await avatar.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // create temp path
+    const ext = avatar.name.split('.').pop();
+    const fileName = `${Date.now()}.${ext}`;
+    const tempDir = path.join(process.cwd(), "public", "temp");
+    await fs.mkdir(tempDir, { recursive: true });
+    const localFilePath = path.join(tempDir, fileName);
+
+    // write temp file
+    await writeFile(localFilePath, buffer);
+
+    // upload to clodinary
+    const uploaded = await uploadOnCloudinary(localFilePath);
+
+    if(!uploaded){
+      return{message:"Avatar upload failed"}
+    }
+
+    // await fs.unlink(localFilePath);
+
+    
+
+    avatarUrl = uploaded.url;
+  }
+
+
   const newuser = await User.create({
     ...validated.data,
     password: hashPassword,
+    avatar: avatarUrl,
   });
 
   if (!newuser) {
+    return{message: "user not created something went wrong."}
   }
 
   console.log("User created successfully");
@@ -125,66 +198,29 @@ export async function createUser(
   redirect("/query");
 }
 
+// ============================================================
+// =================== register user ==========================
+// ============================================================
+import { auth, signIn } from "@/auth";
+import { AuthError } from "next-auth";
+// import { cookies } from "next/headers";
 
-// =============================================================
-const LoginFormSchema = z.object({
-  username: z.string().min(3, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-export async function login(
-  prevState: State,
+export async function authenticate(
+  prevState: string | undefined,
   formData: FormData
-):Promise<State>
-{
-  await connectDB();
-
-  const validated = LoginFormSchema.safeParse({
-    username: formData.get("username"),
-    password: formData.get("password"),
-  });
-
-  if (!validated.success) {
-    return {
-      errors: validated.error.flatten().fieldErrors,
-      message: "Invalid fields all fileds check now!",
-    };
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credientials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
   }
-
-  const { username, password } = validated.data;
-
-  const user = await User.findOne({
-    $or: [{ username }, { email: username }],
-  });
-
-  if (!user) {
-    return {
-      message:
-        "user not founded! Please check your username/email or Sign up now!",
-    };
-  }
-
-  const checkPassword = await bcrypt.compare(password, user.password);
-
-  if (!checkPassword) return { message: "password doen't matched..." };
-
-  // create token
-  const token = {
-    id: user._id,
-    username: user.username,
-  };
-
-  const response = NextResponse.json({
-    message: "Login Successfull",
-    success: true,
-    status: 200,
-  });
-
-  response.cookies.set("token", token, {httpOnly:true});
-
-  return {
-    message: `user Login Successfully ${user.username +' | '+user.email}`
-    
-  }
-  // hrh@gmail.com  | 123456
 }
+
