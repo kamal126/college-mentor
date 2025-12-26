@@ -1,5 +1,4 @@
 export interface Mentor {
-  id: string | number;
   fullName: string;
   title:string;
   company: string;
@@ -7,7 +6,7 @@ export interface Mentor {
   experience: number;
   price: number;
   bio: string;
-  active: boolean;
+  active?: boolean;
   rating?: number;
   skills?: string[];
   avatar?: string;
@@ -15,8 +14,8 @@ export interface Mentor {
 
 
 export type Author = {
-  fullName: string;
-  avatar: string;
+  name: string;
+  img: string;
   role: string;
   online: boolean;
 }
