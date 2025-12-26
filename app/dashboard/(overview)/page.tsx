@@ -1,15 +1,21 @@
 import React from "react";
 import Breadcrumbs from "@/components/expert/breadcrumbs";
 import { ArrowUpRight, AwardIcon, BookOpenTextIcon, RadarIcon, TargetIcon, TrendingUp } from "lucide-react";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function page() {
+export default async function page() {
+  const session = await auth();
+  if(!session){
+    redirect('/test');
+  }
   return (
     <main>
       <Breadcrumbs breadcrumbs={[{ label: "Home", href: "/dashboard", active:true }]} />
       <div className="p-6 md:p-8 border-b border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto">
           <div style={{ opacity: 1, transform: "none" }}>
-            <h1 className="text-slate-900 mb-2">Welcome back, {"Kamal!"}</h1>
+            <h1 className="text-slate-900 mb-2">Welcome back, {session.user.name}</h1>
             {/* <p className="text-slate-600">
               Computer Science • 3rd Year • Sample University
             </p> */}
