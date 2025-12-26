@@ -42,6 +42,6 @@ next-env.d.ts
 
 .env
 
-/test/
+/test
 /seed/
 /query/
