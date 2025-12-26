@@ -1,8 +1,20 @@
 import React from "react";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, PowerIcon } from "lucide-react";
+import { signOut } from "@/auth";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { User } from "@/models/user.model";
+import connectDB from "@/lib/connectDB";
 
-export default function LeftSidebar() {
+
+export default async function LeftSidebar() {
+  const session = await auth();
+  if(!session) redirect("/login");
+
+  await connectDB()
+  const user = await User.findOne({email: session.user.email});
+
   return (
     <div className=" relative w-full  h-screen md:w-[250px] p-4 md:p-2 space-y-4">
 
@@ -16,8 +28,8 @@ export default function LeftSidebar() {
           />
 
           <div>
-            <p className="uppercase font-semibold text-lg">Kamal</p>
-            <p className="text-sm opacity-70">@Kamal126</p>
+            <p className="uppercase font-semibold text-sm">{user?.fullName}</p>
+            <p className="text-sm opacity-70">@{user?.username}</p>
           </div>
         </div>
 
@@ -44,15 +56,15 @@ export default function LeftSidebar() {
             className="w-full text-center p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition"
           >
             <Link
-            href={item[1]}>
-            {item[0]}
+            href={item?item[1]: ''}>
+            {item?item[0]:''}
             </Link>
           </button>
         ))}
       </div>
 
       {/* Logout */}
-      <div className=" absolute bottom-0 w-64 border bottom-0 rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
+      {/* <div className=" absolute bottom-0 w-64 border bottom-0 rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
         <Link
           href={"/"}
           className="block text-center w-full p-3 rounded-xl border border-red-500 text-red-600 font-medium
@@ -61,7 +73,16 @@ export default function LeftSidebar() {
           Logout
         <LogOut className="text-black inline"/>
         </Link>
-      </div>
+      </div> */}
+      <form action= {async ()=>{
+        'use server';
+        await signOut({redirectTo: '/'});
+      }}>
+        <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+            <PowerIcon className="w-6"/>
+            <div className="hidden md:block">Sign Out</div>
+          </button>
+      </form>
 
     </div>
   );
