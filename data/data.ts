@@ -2,21 +2,20 @@ import { Mentor, Author } from "@/lib/types";
 
 const mentors: Mentor[] = [
   {
-    id:1,
     fullName: "Rahul Verma",
     title: "Tech Mentor",
     company: "Google",
     companies: ["Microsoft", "Google", "Amazon", "Facebook"],
     experience: 4,
-    bio: "I help students grow in tech careers using structured mentorship and interview guidance.",
+    bio: "I help students grow in tech careers using structured mentorship and interview gu// idance.",
     rating: 4.5,
     price: 10,
-    skills: ["Career Guidance", "System Design", "Mock Interviews"],
+    skills: ["Career Gu// idance", "System Design", "Mock Interviews"],
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     active:true
   },
   {
-    id:2,
+    // // id:2,
     fullName: "Shruti Singh",
     title: "SDE",
     company: "Microsoft",
@@ -25,14 +24,14 @@ const mentors: Mentor[] = [
     bio: "Helping future developers get clarity on coding fundamentals and career paths.",
     rating: 4.6,
     price: 12,
-    skills: ["DSA", "Career Guidance", "Resume Review"],
+    skills: ["DSA", "Career Gu// idance", "Resume Review"],
     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     active:false
   },
 
   // 48 More 👇👇👇
   {
-    id:3,
+    // // id:3,
     fullName: "Arjun Mehta",
     title: "Backend Engineer",
     company: "Amazon",
@@ -47,7 +46,7 @@ const mentors: Mentor[] = [
 
   },
   {
-    id:4,
+    // id:4,
     fullName: "Neha Gupta",
     title: "Product Designer",
     company: "Spotify",
@@ -62,7 +61,7 @@ const mentors: Mentor[] = [
 
   },
   {
-    id:5,
+    // id:5,
     fullName: "Aditya Sharma",
     title: "AI Researcher",
     company: "OpenAI",
@@ -76,7 +75,7 @@ const mentors: Mentor[] = [
     active:false
   },
   {
-    id:6,
+    // id:6,
     fullName: "Priya Nair",
     title: "Data Scientist",
     company: "IBM",
@@ -90,7 +89,7 @@ const mentors: Mentor[] = [
     active:true
   },
   {
-    id:7,
+    // id:7,
     fullName: "Kabir Khan",
     title: "DevOps Engineer",
     company: "Netflix",
@@ -104,7 +103,7 @@ const mentors: Mentor[] = [
     active:false
   },
   {
-    id:8,
+    // id:8,
     fullName: "Ananya Das",
     title: "Frontend Developer",
     company: "Meta",
@@ -118,21 +117,21 @@ const mentors: Mentor[] = [
     active:false
   },
   {
-    id:9,
+    // id:9,
     fullName: "Rohan Gupta",
     title: "Mobile App Engineer",
     company: "Swiggy",
     companies: ["Swiggy", "PhonePe"],
     experience: 4,
-    bio: "Building super-fast Flutter & Android apps.",
+    bio: "Building super-fast Flutter & Andro// id apps.",
     rating: 4.3,
     price: 10,
-    skills: ["Android", "Flutter", "Firebase"],
+    skills: ["Andro// id", "Flutter", "Firebase"],
     avatar: "https://randomuser.me/api/portraits/men/9.jpg",
     active:true
   },
   {
-    id:10,
+    // id:10,
     fullName: "Simran Kaur",
     title: "Cyber Security Analyst",
     company: "Cisco",
@@ -146,7 +145,7 @@ const mentors: Mentor[] = [
     active:false
   },
   {
-    id:11,
+    // id:11,
     fullName: "Aman Chowdhury",
     title: "Cloud Engineer",
     company: "Google",
@@ -160,7 +159,7 @@ const mentors: Mentor[] = [
     active:false
   },
   {
-    id:12,
+    // id:12,
     fullName: "Tanvi Patel",
     title: "AR/VR Developer",
     company: "Apple",
@@ -178,32 +177,32 @@ const mentors: Mentor[] = [
 
 const authors: Author[] = [
   {
-    fullName: "Amit Sharma",
-    avatar: "https://randomuser.me/api/portraits/men/28.jpg",
+    name: "Amit Sharma",
+    img: "https://randomuser.me/api/portraits/men/28.jpg",
     role: "Data Scientist",
     online: true,
   },
   {
-    fullName: "Neha Gupta",
-    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+    name: "Neha Gupta",
+    img: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
   {
-    fullName: "Neha Gupta",
-    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+    name: "Neha Gupta",
+    img: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
   {
-    fullName: "Neha Gupta",
-    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+    name: "Neha Gupta",
+    img: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: true,
   },
   {
-    fullName: "Neha Gupta",
-    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+    name: "Neha Gupta",
+    img: "https://randomuser.me/api/portraits/women/45.jpg",
     role: "AI Mentor",
     online: false,
   },
@@ -212,7 +211,7 @@ const authors: Author[] = [
 const trending: string[] = [
   "Mock Interviews",
   "Resume Review",
-  "Career Guidance",
+  "Career Gu// idance",
   "Salary Negotiation",
   "Coding Tutoring",
   "Personal Branding",
