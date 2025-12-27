@@ -63,6 +63,7 @@ export const { auth, signIn, signOut } = NextAuth({
     async jwt({token, user}){
       if(user){
         token.id = user.id;
+        token.username = user.username;
         token.isMentor = Boolean(user.isMentor)
       }
       return token;
@@ -71,6 +72,7 @@ export const { auth, signIn, signOut } = NextAuth({
     async session({session, token}){
       if(session.user){
         session.user.id = token.id as string;
+        token.username = token.username as string;
         session.user.isMentor = token.isMentor as boolean
       }
       return session;
