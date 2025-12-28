@@ -14,6 +14,10 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/dashboard") && !isLoggedIn) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
+  
+  if (pathname === "/" && isLoggedIn) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
 
   if (pathname === "/signin" && isLoggedIn) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
