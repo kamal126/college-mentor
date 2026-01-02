@@ -1,50 +1,41 @@
 // import { mentors } from "@/data/data";
 import React from "react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { Separator } from "@radix-ui/react-select";
 import clsx from "clsx";
 import { Mentor } from "@/lib/types";
+import Link from "next/link";
+import Image from "next/image";
+import { BadgeCheckIcon } from "lucide-react";
 
-
-export default function MentorCard({mentor}:{mentor:Mentor}){
-  return(
-    <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_300px] bg-gray-200 mt-2 p-5 rounded-xl">
+function MentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
+  return (
+    <div className=" grid grid-cols-1 lg:min-h-40 md:grid-cols-[1fr_250px] bg-gray-200 dark:bg-gray-700 mt-2 p-6 rounded-xl box-content">
       {/* Left */}
       <div>
         <div className="flex gap-4 items-center">
-          <img
-            src={'/assets/b.jpg'}
-            alt={mentor.fullName}
-            // width={64}
-            // height={64}
-            className={clsx(
-              "rounded-full w-16 h-16 border-2 object-top object-cover",
-              { "border-green-700": mentor.active }
-            )}
-          />
+          <Image
+  src={mentor.avatar || "/default-avatar.png"}
+  alt={mentor.fullName}
+  width={64}
+  height={64}
+  className={clsx(
+    "rounded-full border-2 object-cover",
+    { "border-green-700": mentor.active }
+  )}
+/>
 
           <div>
             <p className="font-bold">{mentor.fullName}</p>
             <p className="font-medium">
               {mentor.title} @{mentor.company}
             </p>
-            <p className="text-orange-700">
-              {mentor.experience}+ years exp
-            </p>
+            <p className="text-orange-700">{mentor.experience}+ years exp</p>
           </div>
         </div>
 
-        <p className="mt-2 font-semibold">
-          {mentor.companies.join(", ")}
-        </p>
+        <p className="mt-2 font-semibold">{mentor.companies.join(", ")}</p>
 
-        <p className="mt-2 hidden lg:block">
-          {mentor.bio.slice(0, 50)}...
-        </p>
-        <p className="mt-2 lg:hidden">
-          {mentor.bio}
-        </p>
+        <p className="mt-2 hidden lg:block">{mentor.bio.slice(0, 50)}...</p>
+        <p className="mt-2 lg:hidden">{mentor.bio}</p>
       </div>
 
       {/* Right */}
@@ -57,22 +48,93 @@ export default function MentorCard({mentor}:{mentor:Mentor}){
           ))}
         </div>
 
-        <p className="bg-white font-medium p-2 mt-2">
+        <p className="bg-white dark:bg-gray-500 font-medium p-2 mt-2">
           Rating: {mentor.rating} | Price: ${mentor.price}/min
         </p>
 
         <div className="flex gap-2 mt-2">
-          <button className="bg-yellow-700 p-2 rounded-xl text-white">
+          <Link href={`/dashboard/mentor/${id}`}>
+            <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
+              View Profile
+            </button>
+          </Link>
+          {/* <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
             View Profile
-          </button>
-          <button className="bg-yellow-700 p-2 rounded-xl text-white">
+          </button> */}
+          <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
             Connect
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
+// function TopMentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
+//   return (
+//     <div>
+//       <Link href={`/dashboard/mentor/${id}`}>
+//         <div className="flex gap-3">
+//           <div className="">
+//             <Image
+//   src={mentor.avatar || "/default-avatar.png"}
+//   alt={mentor.fullName}
+//   width={64}
+//   height={64}
+//   className={clsx(
+//     "rounded-full border-2 object-cover",
+//     { "border-green-700": mentor.active }
+//   )}
+// />
+
+//           </div>
+//           <div className="">
+//             <span className="">
+//               {mentor.fullName}
+//               <BadgeCheckIcon
+//                 className="inline-block ml-1 text-white"
+//                 size={16}
+//                 fill="blue"
+//               />
+//             </span>
+//             <p className="">{mentor.title}</p>
+//           </div>
+//         </div>
+//       </Link>
+//     </div>
+//   );
+// }
+
+function TopMentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
+  return (
+    <Link href={`/dashboard/mentor/${id}`}>
+      <div className="flex gap-3 items-center">
+        <Image
+          src={mentor.avatar || "/default-avatar.png"}
+          alt={mentor.fullName}
+          width={50}
+          height={50}
+          className="rounded-full border-2 border-green-700"
+        />
+
+        <div>
+          <span>
+            {mentor.fullName}
+            <BadgeCheckIcon
+              className="inline-block ml-1 text-white"
+              size={16}
+              fill="blue"
+            />
+          </span>
+          <p>{mentor.title}</p>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+
+export {MentorCard, TopMentorCard}
 
 // export default function MentorCard({ mentor }: { mentor: Mentor }) {
 //   return (
@@ -121,7 +183,7 @@ export default function MentorCard({mentor}:{mentor:Mentor}){
 //           <span className="bg-gray-400 p-2 border border-white rounded-2xl">
 //             {mentor.skills[1]}
 //           </span>
-          
+
 //         </div>
 //       </div>
 

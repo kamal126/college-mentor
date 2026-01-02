@@ -22,3 +22,22 @@ export const expertSchema = z.object({
   active: z.boolean().default(true),
 });
 export type Expert = z.infer<typeof expertSchema>;
+
+export const FormSchema = z.object({
+  fullName: z.string().min(1, "Name required"),
+  title: z.string().min(1, "Title required"),
+  company: z.string().min(1, "company name is required"),
+  companies: z.array(z.string()).min(1, "aAt least one company"),
+  experience: z.coerce.number().min(0),
+  bio: z.string().min(1),
+  price: z.coerce.number().min(0),
+  skills: z.array(z.string()).min(1, "At least one skill"),
+});
+
+export const userSchema = z.object({
+  username: z.string().min(3, "Username is required"),
+  fullName: z.string().min(3, "Full name is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  avatar: z.any().optional().nullable(),
+});

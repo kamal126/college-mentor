@@ -2,6 +2,7 @@ import { fetchTopMentor } from "@/lib/data";
 import { BadgeCheck, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { trending } from "@/data/data";
+import { TopMentorCard } from "../MentorCard";
 
 export default async function TopMentor() {
   const topMentor = await fetchTopMentor();
@@ -12,10 +13,12 @@ export default async function TopMentor() {
         <div className="border-2 rounded-lg m-2 p-2 dark:bg-black/50">
           <h2 className="text-xl font-bold m-2">Top Mentors</h2>
           {/* {topMentor.map((m,i)=>(
-        <p key={i} className="">{m.fullName}</p>
-    ))} */}
+                <p key={i} className="">{m.fullName}</p>
+            ))} */}
           {topMentor.map((m, idx) => (
-            <div key={idx} className="flex gap-2 m-2 p-2 rounded-md cursor-pointer hover:bg-blue-100 ">
+              <div key={idx} className="gap-2 m-2 p-2 rounded-md cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-600">
+              <TopMentorCard mentor={m} id={m._id.toString()}/>
+              {/* <Link href={`/dashboard/mentor/${m._id.toString()}`}>
               <div className="">
                 <img
                   src={m.avatar}
@@ -36,6 +39,7 @@ export default async function TopMentor() {
                 </span>
                 <p className="">{m.title}</p>
               </div>
+              </Link> */}
             </div>
           ))}
         </div>

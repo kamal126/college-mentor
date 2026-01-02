@@ -9,6 +9,8 @@ export interface IUser {
   password: string;
   isMentor:boolean;
   refershToken:string;
+  createdAt?: Date;
+  updatedAt?: Date;
   // forgetPasswordToken?: string;
   // forgetPasswordTokenExpiry?:Date;
   // verifyToken?: string;
@@ -37,8 +39,8 @@ const userSchema = new Schema<IUser>(
   {
     username: { type: String, required: true, unique: true, lowercase: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    fullName: { type: String, required: true, trim: true },
-    avatar: { type: String, default: "/assets/logo.png" },
+    fullName: { type: String, required: true, trim: true},
+    avatar: { type: String},
     password: { type: String, required: true },
     isMentor: {type:Boolean, default:false},
     refershToken: {type: String}

@@ -1,8 +1,11 @@
 import { Metadata } from "next";
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ModeToggle } from "@/components/themeButton";
+import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AI-Mentor",
@@ -11,13 +14,30 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{children: React.ReactNode;}>) 
-{
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className="">
-      <body className={inter.className}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} overflow-x-hidden`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="fixed top-4 right-4 z-50">
+            <ModeToggle />
+          </div>
+
+          <Toaster position="top-right" />
+
+          <main className="w-full">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+

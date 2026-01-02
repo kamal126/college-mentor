@@ -1,23 +1,19 @@
-'use client';
- 
-import { lusitana } from './font';
-import {
-  AtSignIcon,
-  KeyIcon,
-  FileExclamationPointIcon,
-} from 'lucide-react';
-import { ArrowRightIcon } from 'lucide-react';
-import { Button } from './ui/button';
-import { Suspense, useActionState } from 'react';
-import { authenticate } from '@/lib/actions';
-import { useSearchParams } from 'next/navigation';
-import { useFormStatus } from "react-dom";
-import clsx from 'clsx';
+"use client";
 
+import { lusitana } from "./font";
+import { AtSignIcon, KeyIcon, FileExclamationPointIcon } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
+import { Button } from "./ui/button";
+import { Suspense, useActionState } from "react";
+import { authenticate } from "@/lib/actions";
+import { useSearchParams } from "next/navigation";
+import { useFormStatus } from "react-dom";
+import clsx from "clsx";
+import { toast } from "sonner";
+import {useSession} from 'next-auth/react'
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-
   return (
     <Button
       type="submit"
@@ -27,20 +23,30 @@ function SubmitButton() {
         "text-xl bg-blue-600 hover:bg-blue-500 cursor-pointer capitalize",
         pending && "opacity-60 cursor-not-allowed"
       )}
+      onClick={() =>
+        toast("Login Sucessfully!!!", {
+          description: `${Date.UTC}`,
+          action: {
+            label: "Undo",
+            onClick: () => console.log("Undo"),
+          },
+        })
+      }
     >
       {pending ? "Signing in..." : "Sign in"}
     </Button>
   );
 }
- 
+
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
+  const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard";
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
-    undefined,
+    undefined
   );
- 
+  
+
   return (
     <form action={formAction} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
@@ -57,7 +63,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer text-black block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 "
                 id="email"
                 type="email"
                 name="email"
@@ -76,7 +82,7 @@ export default function LoginForm() {
             </label>
             <div className="relative">
               <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                className="peer text-black block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
                 id="password"
                 type="password"
                 name="password"
@@ -89,9 +95,10 @@ export default function LoginForm() {
           </div>
         </div>
         <Suspense>
-            <input type="hidden" name="redirectTo" value={callbackUrl} />
+          <input type="hidden" name="redirectTo" value={callbackUrl} />
         </Suspense>
-        <Button className="mt-4 w-full" aria-disabled={isPending}>
+        <Button 
+        className="mt-4 w-full bg-black text-white hover:" aria-disabled={isPending}>
           Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
         <div
@@ -99,6 +106,7 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
+          
           {errorMessage && (
             <>
               <FileExclamationPointIcon className="h-5 w-5 text-red-500" />

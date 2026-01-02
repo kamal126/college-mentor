@@ -1,15 +1,14 @@
-import { User } from "@/models/user.model";
+import { User, Mentor } from "@/models/user.model";
 import connectDB from "@/lib/connectDB";
 // import { mentors } from "@/data/data";
-import { Mentor } from "@/models/user.model";
 
 
 export async function fetchUsers() {
+  await connectDB();
   try {
-    await connectDB();
 
     const users = await User.find({})
-      .select("_id username fullName")
+      .select("-password")
       .sort({ username: 1 })
       .lean();
 
@@ -41,25 +40,32 @@ export async function fetchUserById(userId: string) {
   await connectDB();
 
   const user = await User.findById(userId)
-    .select("_id fullName company experience price bio companies")
+    .select("-password")
     .lean();
 
   if (!user) throw new Error("User not found");
 
-  return {
-    _id: user._id.toString(),
-    name: user.fullName,
-    company: "",
-    companies: [],
-    experience: 0,
-    price: 0,
-    bio: "",
-    active: true,
-  };
+  return user;
+}
+
+export async function fetchMentorById(mentorId: string) {
+  await connectDB();
+
+  let mentor = null;
+  mentor = await Mentor.findOne({user: mentorId})
+
+  if(!mentor){
+    mentor = await Mentor.findById(mentorId);
+  }
+
+  if (!mentor) throw new Error("Mentor not found");
+
+  return mentor;
 }
 
 
 export async function fetchTopMentor() {
+  await connectDB();
   const topMentors = await Mentor
     .find({})
     .sort({ rating: -1 })

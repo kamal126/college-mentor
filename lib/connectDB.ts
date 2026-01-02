@@ -16,6 +16,7 @@ if(!MONGODB_URI){
 
 // Global cache (prevents multiple connections in dev & production)
 
+
 declare global {
     // eslint-disable-next-line no-var
     var mongoose : {
@@ -33,7 +34,7 @@ if(!cached){
 const connectDB = async () : Promise<Mongoose> => {
     if( cached.conn ) return cached.conn;
 
-    // create onnection once
+    // create connection once
     if(!cached.promise){
         cached.promise = mongoose.connect(MONGODB_URI,{bufferCommands: false});
     }

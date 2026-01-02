@@ -27,82 +27,14 @@ import {
   ChartColumn,
   PlaneTakeoff,
 } from "lucide-react";
+
+import { features, collab } from "@/data/data";
 import { cn } from "@/lib/utils";
 
 const instrumentserif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
 });
-
-const features = [
-  {
-    icon: BotIcon,
-    title: "AI Chatbot",
-    descption: "",
-    content:
-      "Get instant answers to your academic and placement questions 24/7",
-  },
-  {
-    icon: BotIcon,
-    title: "Personalized Guidance",
-    descption: "",
-    content:
-      "Tailored advice based on your profile, goals, and academic background",
-  },
-  {
-    icon: BotIcon,
-    title: "Placement Insights",
-    descption: "",
-    content: "Real-time data and strategies to ace your placement interviews",
-  },
-  {
-    icon: BotIcon,
-    title: "Secure & Private",
-    descption: "",
-    content: "Your data is encrypted and never shared with third parties",
-  },
-  {
-    icon: BotIcon,
-    title: "Resource Library",
-    descption: "",
-    content: "Access curated articles, tips, and study materials",
-  },
-  {
-    icon: BotIcon,
-    title: "Community Support",
-    descption: "",
-    content: "Connect with peers and mentors for collaborative learning",
-  },
-  // {
-  //   icon: BotIcon,
-  //   title: "",
-  //   descption:"",
-  //   content:""
-  // },
-];
-
-const collab=[
-  {
-    icon:Laptop,
-    title:"Development Team",
-    content:"Full Stack Development"
-  },
-  {
-    icon: BotMessageSquare,
-    title:"AI Team",
-    content:"LLM Integration"
-  },
-  {
-    icon: PlaneTakeoff,
-    title:"Design Team",
-    content:"UI/UX Design"
-  },
-  {
-    icon: ChartColumn,
-    title:"Research Team",
-    content:"Data Collection"
-  }
-]
 
 export default function Page() {
   return (
@@ -122,13 +54,14 @@ export default function Page() {
                 "text-4xl md:text-6xl font-bold text-glow text-focus"
               )}
             >
-              AI-Powered Collage
+              AI-Powered Career
               <span className="px-2 md:px-4 relative">
                 <Image
-                  src={"/assets/line.svg"}
-                  alt="."
+                  src="/assets/line.svg"
+                  alt="dot"
                   height={100}
                   width={100}
+                  priority
                   className="absolute -bottom-1 left-3 z-10 w-11/12 -rotate-5"
                 />
                 <p className="inline relative z-20">Guidance</p>
@@ -171,7 +104,7 @@ export default function Page() {
             transition={{ duration: 0.7, delay: 0.8 }}
             className="hidden relative w-full sm:block max-w-5xl mt-12 rounded-xl overflow-hidden shadow-2xl border border-border/50 bigshadow"
           >
-            <div className="aspect-[16/9] flex items-center justify-center">
+            <div className="aspect-video flex items-center justify-center">
               <div className="w-full max-w-4xl dark:bg-gray-900 flex flex-col h-full p-6">
                 <div className="flex gap-2 mb-4 items-center">
                   <div className="rounded-full bg-destructive w-3 h-3"></div>
@@ -208,6 +141,7 @@ export default function Page() {
                       alt=""
                       width={400}
                       height={100}
+                      loading="lazy"
                       className="h-auto lg:w-96 md:80 w-52"
                     />
                   </div>
@@ -222,6 +156,7 @@ export default function Page() {
           alt=""
           height={200}
           width={200}
+          loading="lazy"
           className="absolute top-40 -left-20 opacity-60 hidden md:block"
         />
         <Image
@@ -229,6 +164,7 @@ export default function Page() {
           alt=""
           height={200}
           width={200}
+          loading="lazy"
           className="absolute bottom-80 -right-20 opacity-60 hidden md:block"
         />
       </section>

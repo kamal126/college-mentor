@@ -1,4 +1,20 @@
 import { Mentor, Author } from "@/lib/types";
+import {
+  ArrowRight,
+  FileText,
+  Sparkles,
+  Brain,
+  Zap,
+  Clock,
+  ArrowUpLeft,
+  ArrowUpRight,
+  BotIcon,
+  Laptop,
+  Bot,
+  BotMessageSquare,
+  ChartColumn,
+  PlaneTakeoff,
+} from "lucide-react";
 
 const mentors: Mentor[] = [
   {
@@ -216,6 +232,77 @@ const trending: string[] = [
   "Coding Tutoring",
   "Personal Branding",
 ];
+
+
+export const features = [
+  {
+    icon: BotIcon,
+    title: "AI Chatbot",
+    descption: "",
+    content:
+      "Get instant answers to your academic and placement questions 24/7",
+  },
+  {
+    icon: BotIcon,
+    title: "Personalized Guidance",
+    descption: "",
+    content:
+      "Tailored advice based on your profile, goals, and academic background",
+  },
+  {
+    icon: BotIcon,
+    title: "Placement Insights",
+    descption: "",
+    content: "Real-time data and strategies to ace your placement interviews",
+  },
+  {
+    icon: BotIcon,
+    title: "Secure & Private",
+    descption: "",
+    content: "Your data is encrypted and never shared with third parties",
+  },
+  {
+    icon: BotIcon,
+    title: "Resource Library",
+    descption: "",
+    content: "Access curated articles, tips, and study materials",
+  },
+  {
+    icon: BotIcon,
+    title: "Community Support",
+    descption: "",
+    content: "Connect with peers and mentors for collaborative learning",
+  },
+  // {
+  //   icon: BotIcon,
+  //   title: "",
+  //   descption:"",
+  //   content:""
+  // },
+];
+
+export const collab=[
+  {
+    icon:Laptop,
+    title:"Development Team",
+    content:"Full Stack Development"
+  },
+  {
+    icon: BotMessageSquare,
+    title:"AI Team",
+    content:"LLM Integration"
+  },
+  {
+    icon: PlaneTakeoff,
+    title:"Design Team",
+    content:"UI/UX Design"
+  },
+  {
+    icon: ChartColumn,
+    title:"Research Team",
+    content:"Data Collection"
+  }
+]
 
 
 export {

@@ -1,53 +1,56 @@
 "use client";
 
+import { useState, Suspense } from "react";
 import LoginForm from "@/components/login-form";
 import SignupForm from "@/components/signup-form";
-import { Suspense, useState } from "react";
 
-export default function LoginPage() {
-  const [toogle, setToggle] = useState(true);
-  
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+export default function AuthPage() {
+  const [isLogin, setIsLogin] = useState(true);
+
   return (
-     <main className="relative flex flex-col w-full h-screen justify-center items-center bg-blue-100">
-        <button 
-        onClick={()=>setToggle(prev=>!prev)}
-        className="bg-blue-600 absolute top-2 left-5 hover:bg-blue-500 transition-all p-2 px-5 m-5">{toogle?"Sign up":"Sign in"}</button>
-        
-      <div className="border-2 border-slate-300 p-10 rounded-lg bg-white">
-        <div className="flex justify-center mb-3 font-semibold rounded-sm bg-blue-300">
-          <h2 className="text-2xl">{!toogle?"Sign up":"Sign in"}</h2>
-        </div>
-        <Suspense>
-          {(toogle? <LoginForm/> : <SignupForm/>)}
-        </Suspense>
+    <main className="flex h-screen w-full items-center justify-center bg-blue-100 dark:bg-black/10">
+      <div className="relative rounded-lg border bg-white p-10 shadow-md w-[350px]">
+
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsLogin((prev) => !prev)}
+          className="absolute right-4 top-4 text-sm text-blue-600 hover:underline"
+        >
+          {isLogin ? "Sign up" : "Sign in"}
+        </button>
+
+        {/* Title */}
+        <h2 className="mb-6 text-center text-2xl font-semibold text-red-500">
+          {isLogin ? "Sign In" : "Sign Up"}
+        </h2>
+
+        {/* Dialog */}
+        <Dialog>
+          <DialogTrigger className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-500">
+            {isLogin ? "Login" : "Create Account"}
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-center">
+                {isLogin ? "Welcome Back" : "Create an Account"}
+              </DialogTitle>
+            </DialogHeader>
+
+            <Suspense>
+              {isLogin ? <LoginForm /> : <SignupForm />}
+            </Suspense>
+          </DialogContent>
+        </Dialog>
       </div>
     </main>
-  )
+  );
 }
-
-
-
-
-
-
-
-
-// import LoginForm from "@/components/login-form";
-// import { Suspense } from "react";
-
-// export default function Page() {
-  
-//   return (
-//     <main className="flex flex-col w-full h-screen justify-center items-center bg-blue-100">
-//       <div className="border-2 border-slate-300 p-10 rounded-lg bg-white">
-//         <div className="flex justify-center mb-2 font-semibold rounded-sm bg-blue-300">
-//           <h2 className="text-2xl capitalize">sign in</h2>
-//         </div>
-
-//         <Suspense>
-//           <LoginForm/>
-//         </Suspense>
-//       </div>
-//     </main>
-//   );
-// }

@@ -1,30 +1,42 @@
-import { ReactNode } from "react"
-import LeftSidebar from "@/components/LeftSidebar"
-// import RightSidebar from "@/components/RightSidebar"
-import { Toaster } from "@/components/ui/sonner";
-// import { motion as mt } from "framer-motion";
-import TopMentor from "@/components/dashboard/TopMentor"; // right side bar
+import { ReactNode } from "react";
+import LeftSidebar from "@/components/LeftSidebar";
+import TopMentor from "@/components/dashboard/TopMentor";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
-
-export default async function layout({children}: { children: ReactNode}) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-        <Toaster className="absolute top-1 left-50"/>
-        <div className="w-full flex-none md:w-64">
-            <LeftSidebar/>
-        </div>
-        <div
-        // initial={{opacity:0, y:10}}
-        // animate={{opacity:1, y:0}}
-        // transition={{type:'spring'}}
-         className="grow p-6 md:overflow-y-auto md:p-16 bg-blue-50">
-            {children}
-        </div>
+    <div className="flex h-screen overflow-hidden bg-blue-50 dark:bg-black/10">
+      
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block">
+        <LeftSidebar />
+      </div>
 
-        <div className="hidden w-full lg:block lg:w-90">
-            {/* <RightSidebar/> */}
-            <TopMentor/>
-        </div>
+      {/* Mobile / Tablet Drawer */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <Drawer>
+          <DrawerTrigger className="w-10 h-8 bg-white text-black border rounded">
+            |||
+          </DrawerTrigger>
+          <DrawerContent>
+            <LeftSidebar />
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* Main Content */}
+      <main className="flex-1 p-6 md:p-16 overflow-y-auto">
+        {children}
+      </main>
+
+      {/* Right Sidebar (Desktop only) */}
+      <div className="hidden lg:block w-80">
+        <TopMentor />
+      </div>
     </div>
-  )
+  );
 }

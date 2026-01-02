@@ -1,3 +1,9 @@
+export type State = {
+  errors?: Record<string, string[]>;
+  message?: string | null;
+};
+
+
 export interface Mentor {
   fullName: string;
   title:string;
@@ -29,3 +35,4 @@ export type expert = {
   bio: string;
   pastCompanies: string;
 };
+

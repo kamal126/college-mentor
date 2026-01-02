@@ -1,6 +1,7 @@
 "use server";
 
-import { z } from "zod";
+import { auth, signIn } from "@/auth";
+import { AuthError } from "next-auth";
 import connectDB from "./connectDB";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -10,32 +11,18 @@ import { uploadOnCloudinary } from "./cloudinary";
 import path from "path";
 import { writeFile } from "fs/promises";
 import fs from 'fs/promises';
-import os from 'os'
+import { FormSchema, userSchema } from "@/models/Scehma";
+import { State } from "./types";
 
 
-const FormSchema = z.object({
-  fullName: z.string().min(1, "Name required"),
-  title: z.string().min(1, "Title required"),
-  company: z.string().min(1, "company name is required"),
-  companies: z.array(z.string()).min(1, "aAt least one company"),
-  experience: z.coerce.number().min(0),
-  bio: z.string().min(1),
-  price: z.coerce.number().min(0),
-  skills: z.array(z.string()).min(1, "At least one skill"),
-});
-
-export type State = {
-  errors?: Record<string, string[]>;
-  message?: string | null;
-};
-// const CreateExpert = FormSchema.omit({ id: true, date: true });
+const CreateExpert = FormSchema.omit({ fullName: true, date: true });
 export async function createExpert(
   prevState: State,
   formData: FormData
 ): Promise<State> {
   await connectDB();
 
-  const validatedFields = FormSchema.safeParse({
+  const validatedFields = CreateExpert.safeParse({
     fullName: formData.get("fullName"),
     title: formData.get("title"),
     company: formData.get("company"),
@@ -97,17 +84,6 @@ export async function createExpert(
   revalidatePath("/dashboard/mentor");
   redirect("/dashboard/mentor");
 }
-// =====================================
-// =====================================
-// =====================================
-
-const userSchema = z.object({
-  username: z.string().min(3, "Username is required"),
-  fullName: z.string().min(3, "Full name is required"),
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  avatar: z.any().optional().nullable(),
-});
 
 export async function createUser(
   prevState: State,
@@ -140,7 +116,7 @@ export async function createUser(
     };
   }
 
-  const hashPassword = await bcrypt.hash(validated.data.password, 10);
+  const hashPassword = await bcrypt.hash(password, 10);
 
   let avatarUrl = "";
 
@@ -195,18 +171,13 @@ export async function createUser(
 
   console.log("User created successfully");
 
-  redirect("/query");
+  redirect("/signin");
 }
-
 // ============================================================
 // =================== register user ==========================
 // ============================================================
-import { auth, signIn } from "@/auth";
-import { AuthError } from "next-auth";
-// import { cookies } from "next/headers";
-
 export async function authenticate(
-  prevState: string | undefined,
+  prevState: State | undefined,
   formData: FormData
 ) {
   try {
@@ -215,9 +186,11 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "Invalid credientials.";
+          return {
+            errors: "Invalid credientials."
+          };
         default:
-          return "Something went wrong.";
+          return {errors: "Something went wrong."};
       }
     }
     throw error;
