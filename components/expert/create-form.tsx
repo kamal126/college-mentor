@@ -1,11 +1,13 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { createExpert, State } from "@/lib/actions";
+import { createExpert } from "@/lib/actions";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import clsx from "clsx";
 import { lusitana } from "../font";
+import { State } from "@/lib/types";
+
 
 function SubmitButton(){
     const {pending} = useFormStatus();
