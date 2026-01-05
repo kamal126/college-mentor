@@ -12,8 +12,12 @@ import path from "path";
 import { writeFile } from "fs/promises";
 import fs from 'fs/promises';
 import { FormSchema, userSchema } from "@/models/Scehma";
-import { State } from "./types";
 
+export type State = {
+  errors?: Record<string, string[]>;
+  message?: string | null;
+  success?: boolean;
+};
 
 const CreateExpert = FormSchema.omit({ fullName: true, date: true });
 export async function createExpert(
@@ -176,24 +180,25 @@ export async function createUser(
 // ============================================================
 // =================== register user ==========================
 // ============================================================
+
 export async function authenticate(
   prevState: State | undefined,
   formData: FormData
-) {
+): Promise<State> {
   try {
     await signIn("credentials", formData);
+    return {success:true, message: null }; // ✅ success
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return {
-            errors: "Invalid credientials."
-          };
+          return { message: "Invalid credentials" };
         default:
-          return {errors: "Something went wrong."};
+          return { message: "Something went wrong" };
       }
     }
     throw error;
   }
 }
+
 
