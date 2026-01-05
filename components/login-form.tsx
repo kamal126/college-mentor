@@ -4,36 +4,26 @@ import { lusitana } from "./font";
 import { AtSignIcon, KeyIcon, FileExclamationPointIcon } from "lucide-react";
 import { ArrowRightIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { Suspense, useActionState } from "react";
-import { authenticate } from "@/lib/actions";
+import { Suspense, useActionState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import clsx from "clsx";
+import { authenticate, State } from "@/lib/actions";
 import { toast } from "sonner";
-import {useSession} from 'next-auth/react'
-
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button
       type="submit"
-      disabled={pending}
+      aria-disabled={pending}
       className={clsx(
         lusitana,
-        "text-xl bg-blue-600 hover:bg-blue-500 cursor-pointer capitalize",
-        pending && "opacity-60 cursor-not-allowed"
+        "mt-4 w-full text-white bg-black ",
+        pending && "opacity-60 cursor-not-allowed bg-gray-800"
       )}
-      onClick={() =>
-        toast("Login Sucessfully!!!", {
-          description: `${Date.UTC}`,
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })
-      }
     >
       {pending ? "Signing in..." : "Sign in"}
+      <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );
 }
@@ -41,11 +31,18 @@ function SubmitButton() {
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard";
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined
-  );
-  
+  const [state, formAction] = useActionState(authenticate, {
+    message: null,
+  });
+
+  useEffect(() => {
+    if (state?.success === true) {
+      toast.success("Login successful");
+    }
+    if (state?.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-3">
@@ -94,24 +91,18 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <Suspense>
-          <input type="hidden" name="redirectTo" value={callbackUrl} />
-        </Suspense>
-        <Button 
-        className="mt-4 w-full bg-black text-white hover:" aria-disabled={isPending}>
-          Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
-        </Button>
+        <input type="hidden" name="redirectTo" value={callbackUrl} />
+        <SubmitButton/>
         <div
           className="flex h-8 items-end space-x-1"
           aria-live="polite"
           aria-atomic="true"
         >
-          
-          {errorMessage && (
-            <>
-              <FileExclamationPointIcon className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{errorMessage}</p>
-            </>
+          {state?.message && (
+            <div className="flex items-center gap-1 text-red-500">
+              <FileExclamationPointIcon className="h-5 w-5" />
+              <p className="text-sm">{state.message}</p>
+            </div>
           )}
         </div>
       </div>
