@@ -8,21 +8,19 @@ import { BadgeCheckIcon } from "lucide-react";
 
 function MentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
   return (
-    <div className=" grid grid-cols-1 lg:min-h-40 md:grid-cols-[1fr_250px] bg-gray-200 dark:bg-gray-700 mt-2 p-6 rounded-xl box-content">
+    <div className=" grid grid-cols-1 lg:min-h-40 md:grid-cols-[1fr_250px] text-center md:text-start bg-gray-200 dark:bg-gray-700 mt-2 p-6 rounded-xl box-content">
       {/* Left */}
       <div>
-        <div className="flex gap-4 items-center">
+        <div className="flex flex-col md:flex-row gap-4 items-center text-center">
           <Image
-  src={mentor.avatar || "/default-avatar.png"}
-  alt={mentor.fullName}
-  width={64}
-  height={64}
-  className={clsx(
-    "rounded-full border-2 object-cover",
-    { "border-green-700": mentor.active }
-  )}
-/>
-
+            src={mentor.avatar || "/default-avatar.png"}
+            alt={mentor.fullName}
+            width={64}
+            height={64}
+            className={clsx("rounded-full border-2 bg-gray-400 border-black object-cover", {
+              "border-green-700": mentor.active,
+            })}
+          />
           <div>
             <p className="font-bold">{mentor.fullName}</p>
             <p className="font-medium">
@@ -30,6 +28,7 @@ function MentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
             </p>
             <p className="text-orange-700">{mentor.experience}+ years exp</p>
           </div>
+
         </div>
 
         <p className="mt-2 font-semibold">{mentor.companies.join(", ")}</p>
@@ -40,7 +39,7 @@ function MentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
 
       {/* Right */}
       <div className="mt-4 lg:mt-0">
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap justify-center md:justify-start">
           {mentor.skills?.slice(0, 2).map((skill) => (
             <span key={skill} className="bg-gray-300 p-1 rounded-xl">
               {skill}
@@ -52,15 +51,12 @@ function MentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
           Rating: {mentor.rating} | Price: ${mentor.price}/min
         </p>
 
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 mt-2 justify-center">
           <Link href={`/dashboard/mentor/${id}`}>
             <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
               View Profile
             </button>
           </Link>
-          {/* <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
-            View Profile
-          </button> */}
           <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
             Connect
           </button>
@@ -133,8 +129,7 @@ function TopMentorCard({ mentor, id }: { mentor: Mentor; id: string }) {
   );
 }
 
-
-export {MentorCard, TopMentorCard}
+export { MentorCard, TopMentorCard };
 
 // export default function MentorCard({ mentor }: { mentor: Mentor }) {
 //   return (
