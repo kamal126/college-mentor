@@ -6,12 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import clsx from "clsx";
 
-type MentorProfileProps = {
-  mentorId: { id: string };
-};
-
-export default async function MentorProfile({ mentorId }: MentorProfileProps) {
-  const mentor = await fetchMentorById(mentorId.id);
+export default async function MentorProfile({ mentorId }: {mentorId:string}) {
+  const mentor = await fetchMentorById(mentorId);
 
   if (!mentor) {
     return (
@@ -68,13 +64,13 @@ export default async function MentorProfile({ mentorId }: MentorProfileProps) {
         {/* Bio & Current Role */}
         <div className="text-center space-y-6">
           {mentor.bio ? (
-            <p className={clsx(lusitana.className, "text-lg leading-relaxed max-w-2xl mx-auto opacity-95")}>
-              {mentor.bio}`&quot`
-            </p>
+            <q className={clsx(lusitana.className, "text-lg leading-relaxed max-w-2xl mx-auto opacity-95")}>
+              {mentor.bio}
+            </q>
           ) : (
             <p className="italic text-white/70">No bio provided yet.</p>
           )}
-
+          <p></p>
           <p className="text-2xl md:text-3xl font-bold">
             {mentor.title} <span className="text-yellow-300">@ {mentor.company}</span>
           </p>
