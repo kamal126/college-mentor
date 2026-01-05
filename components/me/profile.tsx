@@ -48,7 +48,7 @@ export default async function Profile() {
 
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-semibold">{mentor.title}</h2>
+              <h2 className="text-2xl font-semibold uppercase">{mentor.title}</h2>
               <p className="text-gray-600">
                 {mentor.company} • {mentor.experience}+ years experience
               </p>
@@ -63,9 +63,10 @@ export default async function Profile() {
           </div>
 
           {/* BIO */}
-          <p className="text-gray-700 leading-relaxed">
+          <q className="text-gray-500 leading-relaxed">
             {mentor.bio}
-          </p>
+          </q>
+          <p></p>
 
           {/* SKILLS */}
           {mentor.skills?.length > 0 && (
