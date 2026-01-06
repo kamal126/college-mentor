@@ -1,22 +1,26 @@
 import { auth } from "@/auth";
 import { fetchMentorById, fetchUserById } from "@/lib/data";
 import { redirect } from "next/navigation";
+// import ProfileCard from "./profileCard";
 
 export default async function Profile() {
   const session = await auth();
   if (!session) redirect("/login");
 
   const user = await fetchUserById(session.user.id);
+
   let mentor = null;
   if (user.isMentor) {
     mentor = await fetchMentorById(user._id.toString());
   }
 
+  // return <ProfileCard me={user} mentor={mentor} />;
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
 
       {/* ===== USER HERO ===== */}
       <div className="relative bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
+        <button>Edit</button>
         <div className="flex flex-col sm:flex-row items-center gap-6">
           <img
             src={user.avatar}
@@ -31,24 +35,29 @@ export default async function Profile() {
 
             {user.isMentor && (
               <span className="inline-block mt-3 px-4 py-1 text-sm bg-white/20 rounded-full">
-                Mentor
+                mentor
               </span>
             )}
           </div>
 
-          <div className="text-center sm:text-left">
-            <p className="opacity-90">Joined: {mentor?.createdAt?.toDateString()}</p>
-          </div>
+          {mentor?.createdAt && (
+            <div className="text-center sm:text-left">
+              <p className="opacity-90">
+                Joined: {new Date(mentor.createdAt).toDateString()}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ===== MENTOR SECTION ===== */}
+      {/* ===== mentor SECTION ===== */}
       {mentor && (
         <div className="bg-white rounded-2xl shadow-md p-8 space-y-6">
-
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-semibold uppercase">{mentor.title}</h2>
+              <h2 className="text-2xl font-semibold uppercase">
+                {mentor.title}
+              </h2>
               <p className="text-gray-600">
                 {mentor.company} • {mentor.experience}+ years experience
               </p>
@@ -62,13 +71,8 @@ export default async function Profile() {
             </div>
           </div>
 
-          {/* BIO */}
-          <q className="text-gray-500 leading-relaxed">
-            {mentor.bio}
-          </q>
-          <p></p>
+          <q className="text-gray-500 leading-relaxed">{mentor.bio}</q>
 
-          {/* SKILLS */}
           {mentor.skills?.length > 0 && (
             <div>
               <h3 className="font-semibold mb-2">Skills</h3>
@@ -85,7 +89,6 @@ export default async function Profile() {
             </div>
           )}
 
-          {/* COMPANIES */}
           {mentor.companies?.length > 0 && (
             <div>
               <h3 className="font-semibold mb-2">Previously Worked At</h3>
@@ -102,7 +105,6 @@ export default async function Profile() {
             </div>
           )}
 
-          {/* FOOTER */}
           <div className="flex flex-wrap items-center gap-6 pt-4 border-t">
             {mentor.rating && (
               <p className="text-sm">
@@ -112,19 +114,16 @@ export default async function Profile() {
 
             {mentor.isActive && (
               <span className="text-sm px-3 py-1 bg-green-100 text-green-700 rounded-full">
-                Available for mentoring
+                You are joined as mentor
               </span>
             )}
           </div>
         </div>
       )}
 
-      {/* ===== EMPTY STATE ===== */}
       {!mentor && (
         <div className="bg-gray-50 border border-dashed rounded-xl p-8 text-center text-gray-600">
-          <p>
-            You are not a mentor yet.
-          </p>
+          <p>You are not an mentor yet.</p>
           <p className="text-sm mt-1">
             Complete your mentor profile to start mentoring 🚀
           </p>
