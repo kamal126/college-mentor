@@ -1,9 +1,10 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import ErrorClient from "./ErrorClient";
 
 export default function AuthErrorPage() {
-  const error = useSearchParams()?.get("error");
-
-  return <p>Authentication error: {error}</p>;
+  return (
+    <Suspense fallback={<p>Loading error...</p>}>
+      <ErrorClient />
+    </Suspense>
+  );
 }
