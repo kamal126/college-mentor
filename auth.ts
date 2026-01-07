@@ -17,13 +17,13 @@ async function getUser(email: string) {
   }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
       credentials:{
-        email: {label:"Email", type:"email", placeholder:"kamal@gmail.com"},
-        password: {label:"Password", type:"password", placeholder:"******"}
+        email: {label:"Email", type:"email"},
+        password: {label:"Password", type:"password"}
       },
       async authorize(credentials) {
         const parsedCredentials = z
@@ -33,28 +33,22 @@ export const { auth, signIn, signOut } = NextAuth({
           })
           .safeParse(credentials);
 
-        if(parsedCredentials.success){
-            const {email, password} = parsedCredentials.data;
-            const user = await getUser(email);
+        if (!parsedCredentials.success) return null;
 
-            if(!user) return null;
+        const { email, password } = parsedCredentials.data;
+        const user = await getUser(email);
+        if (!user) return null;
 
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if(!passwordMatch) return null;
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) return null;
 
-            if(passwordMatch){ 
-              console.log(user); 
-              return {
-                id: user._id.toString(),
-                email:user.email,
-                name:user.fullName ?? user.email,
-                username: user.username,
-                isMentor: user.isMentor,
-              };
-            }
-        }
-        console.log('Invalid credentials');
-        return null;
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          name: user.fullName ?? user.email,
+          username: user.username,
+          isMentor: user.isMentor,
+        };
       },
     }),
   ],
@@ -64,7 +58,7 @@ export const { auth, signIn, signOut } = NextAuth({
       if(user){
         token.id = user.id;
         token.username = user.username;
-        token.isMentor = Boolean(user.isMentor)
+        token.isMentor = Boolean(user.isMentor);
       }
       return token;
     },
@@ -72,13 +66,77 @@ export const { auth, signIn, signOut } = NextAuth({
     async session({session, token}){
       if(session.user){
         session.user.id = token.id as string;
-        token.username = token.username as string;
-        session.user.isMentor = token.isMentor as boolean
+        session.user.username = token.username as string;
+        session.user.isMentor = token.isMentor as boolean;
       }
       return session;
     },
   },
 });
+
+
+// export const { auth, signIn, signOut } = NextAuth({
+//   ...authConfig,
+//   providers: [
+//     Credentials({
+//       credentials:{
+//         email: {label:"Email", type:"email", placeholder:"kamal@gmail.com"},
+//         password: {label:"Password", type:"password", placeholder:"******"}
+//       },
+//       async authorize(credentials) {
+//         const parsedCredentials = z
+//           .object({ 
+//             email: z.string().email(), 
+//             password: z.string().min(6) 
+//           })
+//           .safeParse(credentials);
+
+//         if(parsedCredentials.success){
+//             const {email, password} = parsedCredentials.data;
+//             const user = await getUser(email);
+
+//             if(!user) return null;
+
+//             const passwordMatch = await bcrypt.compare(password, user.password);
+//             if(!passwordMatch) return null;
+
+//             if(passwordMatch){ 
+//               console.log(user); 
+//               return {
+//                 id: user._id.toString(),
+//                 email:user.email,
+//                 name:user.fullName ?? user.email,
+//                 username: user.username,
+//                 isMentor: user.isMentor,
+//               };
+//             }
+//         }
+//         console.log('Invalid credentials');
+//         return null;
+//       },
+//     }),
+//   ],
+
+//   callbacks:{
+//     async jwt({token, user}){
+//       if(user){
+//         token.id = user.id;
+//         token.username = user.username;
+//         token.isMentor = Boolean(user.isMentor)
+//       }
+//       return token;
+//     },
+
+//     async session({session, token}){
+//       if(session.user){
+//         session.user.id = token.id as string;
+//         token.username = token.username as string;
+//         session.user.isMentor = token.isMentor as boolean
+//       }
+//       return session;
+//     },
+//   },
+// });
 
 // import NextAuth from 'next-auth'
 // import Credentials from 'next-auth/providers/credentials'
