@@ -3,11 +3,12 @@
 import mongoose, { Mongoose } from "mongoose";
 
 
-if (!process.env.DATABASE_URL || !process.env.DATABASE_NAME) {
-  throw new Error("DATABASE_URL or DATABASE_NAME missing");
-}
+// if (!process.env.DATABASE_URL || !process.env.DATABASE_NAME) {
+//   throw new Error("DATABASE_URL or DATABASE_NAME missing");
+// }
 
-const MONGODB_URI = `${process.env.DATABASE_URL}${process.env.DATABASE_NAME}`;
+// const MONGODB_URI = `${process.env.DATABASE_URL}${process.env.DATABASE_NAME}`;
+const MONGODB_URI = `${process.env.MONGODB_URI}`;
 
 
 if(!MONGODB_URI){
