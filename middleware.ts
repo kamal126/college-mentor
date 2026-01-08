@@ -7,20 +7,20 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isMentor = req.auth?.user?.isMentor === true;
 
-  // // 🔐 Dashboard protection
-  // if (pathname.startsWith("/dashboard") && !isLoggedIn) {
-  //   return NextResponse.redirect(new URL("/signin", req.url));
-  // }
+  // 🔐 Dashboard protection
+  if (pathname.startsWith("/dashboard") && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/signin", req.url));
+  }
 
-  // // 🔁 Home → dashboard if logged in
-  // if (pathname === "/" && isLoggedIn) {
-  //   return NextResponse.redirect(new URL("/dashboard", req.url));
-  // }
+  // 🔁 Home → dashboard if logged in
+  if (pathname === "/" && isLoggedIn) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
 
-  // // 🔁 Signin → dashboard if logged in
-  // if (pathname === "/signin" && isLoggedIn) {
-  //   return NextResponse.redirect(new URL("/dashboard", req.url));
-  // }
+  // 🔁 Signin → dashboard if logged in
+  if (pathname === "/signin" && isLoggedIn) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
 
   // 🚫 Mentor restriction example
   if (pathname === "/dashboard/expert" && !isMentor) {
