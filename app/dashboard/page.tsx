@@ -1,11 +1,13 @@
 import React from "react";
 import Breadcrumbs from "@/components/expert/breadcrumbs";
 import { ArrowUpRight, AwardIcon, BookOpenTextIcon, RadarIcon, TargetIcon, TrendingUp } from "lucide-react";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
 
 export default async function page() {
-  const session = await auth();
+
+  const session = await getServerSession(authOptions);
   if(!session){
     redirect('/test');
   }
@@ -16,7 +18,9 @@ export default async function page() {
       <div className="p-6 md:p-8 border-b border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto">
           <div style={{ opacity: 1, transform: "none" }}>
-            <h1 className="text-slate-900  mb-2">Welcome back, {session.user.name}</h1>
+            <h1 className="text-slate-900  mb-2">Welcome back, 
+              <span className="font-bold"
+              >{session.user.fullName?.toUpperCase()}</span></h1>
             {/* <p className="text-slate-600">
               Computer Science • 3rd Year • Sample University
             </p> */}
@@ -102,3 +106,19 @@ export default async function page() {
     </main>
   );
 }
+
+// import { auth } from "@/auth";
+// import { redirect } from "next/navigation";
+
+// export default async function Dashboard() {
+//   // const session = await auth();
+
+//   // if (!session) redirect("/login");
+
+//   return (
+//     <div>
+//       {/* <h1>Welcome {session.user.username}</h1>
+//       <p>Mentor: {session.user.isMentor ? "Yes" : "No"}</p> */}
+//     </div>
+//   );
+// }
