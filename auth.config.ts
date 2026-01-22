@@ -20,4 +20,10 @@ export const authConfig = {
         },
     },
     providers:[], // Add providers with an empty array for now
+    session: { strategy: "jwt" as const },
+    secret: process.env.NEXTAUTH_SECRET,
+
+
 }satisfies NextAuthConfig;
+
+
