@@ -1,233 +1,166 @@
 "use client";
 
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
-import Link from "next/link";
 
-export default function SignupForm(){
+function RegisterPage() {
   const router = useRouter();
-  const [user, setUser] = useState({
-    email:"",password:"",username:"",avatar:"", fullname:""
-  });
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
 
-  const onSignup = async ()=>{
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  /* ======================
+     Submit
+  ====================== */
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     try {
       setLoading(true);
-      const res = await axios.post("/api/users/signup",user);
-      console.log("signup success", res.data);
-      toast.success(res.data);
-      router.push("/dashboard");
-    } catch (error:any) {
-      console.log("Signup failed", error.message);
+
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("username", username);
+      formData.append("fullName", fullName);
+      formData.append("password", password);
+      if (avatar) formData.append("avatar", avatar);
+
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: formData, // ✅ NOT JSON
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Registration failed");
+      }
+
+      toast.success("Account created successfully");
+      router.push("/signin");
+    } catch (error: any) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(user.email.length>0 && user.fullname.length>0 && user.password.length>=6 && user.username.length>0){
-      setButtonDisabled(false);
-    }else{
-      setButtonDisabled(true);
-    }
-  },[user]);
+  /* ======================
+     Avatar Handler
+  ====================== */
 
-  function handleAvatarChange(e) {
+  const handleAvatarChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // ✅ client-side safety
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      alert("Only JPG, PNG, WEBP allowed");
-      e.target.value = "";
+      toast.error("Only JPG, PNG, or WEBP allowed");
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      alert("Max file size is 2MB");
-      e.target.value = "";
+      toast.error("Avatar must be under 2MB");
       return;
     }
 
+    setAvatar(file);
     setPreview(URL.createObjectURL(file));
-  }
+  };
 
-  return(
-    <div className="">
-      <div className="flex flex-col gap-2 space-y-1"
-    >
-      <label>Username</label>
-      <input
-        name="username"
-        type="text"
-        value={user.username}
-        onChange={(e)=>setUser({...user, username:e.target.value})}
-        placeholder="username"
-        className="border-2 border-slate-300 rounded-sm p-1 lowercase"
-      />
+  /* ======================
+     UI
+  ====================== */
 
-      <label>Full Name</label>
-      <input
-        name="fullName"
-        className="border-2 border-slate-300 rounded-sm p-1 capitalize"
-      />
+  return (
+    <div className="max-w-sm mx-auto space-y-4">
+      <h1 className="text-xl font-semibold">Register</h1>
 
-      <label>Email</label>
-      <input
-        type="email"
-        id="email"
-        value={user.email}
-        onChange={(e) => setUser({...user, email: e.target.value})}
-        placeholder="email"
-        className="border-2 border-slate-300 rounded-sm p-1 lowercase"
-      />
-
-      <label>Password</label>
-      <input
-        type="password"
-        name="password"
-        value={user.password}
-        onChange={(e) => setUser({...user, password: e.target.value})}
-        placeholder="password"
-        className="border-2 border-slate-300 rounded-sm p-1"
-      />
-
-      {/* ✅ Avatar Upload */}
-      <label>Avatar</label>
-      <input
-        type="file"
-        name="avatar"
-        accept="image/*"
-        onChange={handleAvatarChange}
-        className="border-2 border-slate-300 rounded-sm p-1"
-      />
-
-      {preview && (
-        <img
-          src={preview}
-          alt="Avatar preview"
-          className="w-20 h-20 rounded-full object-cover mt-2 mx-auto border"
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded"
         />
-      )}
 
-      <Button 
-      type="submit" 
-      className="mt-2"
-      aria-disabled={buttonDisabled}
-      onClick={onSignup}>
-        {buttonDisabled ? "Signup":"Signup..."}
-      </Button>
-    </div>
+        <input
+          placeholder="Full name"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          className="border p-2 rounded"
+        />
 
-    <Link href="/signup">Visit Login Page</Link>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 rounded"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 rounded"
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="border p-2 rounded"
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleAvatarChange}
+          className="border p-2 rounded"
+        />
+
+        {preview && (
+          <img
+            src={preview}
+            alt="Avatar preview"
+            className="w-20 h-20 rounded-full object-cover mx-auto"
+          />
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-black text-white p-2 rounded mt-2"
+        >
+          {loading ? "Creating account..." : "Register"}
+        </button>
+      </form>
+
+      <p className="text-sm text-center">
+        Already have an account?{" "}
+        <a href="/signin" className="underline">
+          Login
+        </a>
+      </p>
     </div>
-  )
+  );
 }
 
-// "use client";
-// import { useActionState, useState } from "react";
-// import { createUser, State } from "@/lib/actions";
-// import { Button } from "@/components/ui/button";
-// const initialState: State = {
-//   errors: {},
-//   message: null,
-// };
-
-// export default function SignupForm() {
-//   const [state, formAction] = useActionState(createUser, initialState);
-//   const [preview, setPreview] = useState<string | null>(null);
-
-//   function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-//     const file = e.target.files?.[0];
-//     if (!file) return;
-
-//     // ✅ client-side safety
-//     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-//       alert("Only JPG, PNG, WEBP allowed");
-//       e.target.value = "";
-//       return;
-//     }
-
-//     if (file.size > 2 * 1024 * 1024) {
-//       alert("Max file size is 2MB");
-//       e.target.value = "";
-//       return;
-//     }
-
-//     setPreview(URL.createObjectURL(file));
-//   }
-
-//   return (
-//     <form
-//       action={formAction}
-//       // encType="multipart/form-data"
-//       className="flex flex-col gap-2 space-y-1"
-//     >
-//       <label>Username</label>
-//       <input
-//         name="username"
-//         className="border-2 border-slate-300 rounded-sm p-1 lowercase"
-//       />
-//       {state.errors?.username && (
-//         <p className="text-red-500">{state.errors.username[0]}</p>
-//       )}
-
-//       <label>Full Name</label>
-//       <input
-//         name="fullName"
-//         className="border-2 border-slate-300 rounded-sm p-1 capitalize"
-//       />
-//       {state.errors?.fullName && (
-//         <p className="text-red-500">{state.errors.fullName[0]}</p>
-//       )}
-
-//       <label>Email</label>
-//       <input
-//         type="email"
-//         name="email"
-//         className="border-2 border-slate-300 rounded-sm p-1 lowercase"
-//       />
-
-//       <label>Password</label>
-//       <input
-//         type="password"
-//         name="password"
-//         className="border-2 border-slate-300 rounded-sm p-1"
-//       />
-
-//       {/* ✅ Avatar Upload */}
-//       <label>Avatar</label>
-//       <input
-//         type="file"
-//         name="avatar"
-//         accept="image/*"
-//         onChange={handleAvatarChange}
-//         className="border-2 border-slate-300 rounded-sm p-1"
-//       />
-
-//       {preview && (
-//         <img
-//           src={preview}
-//           alt="Avatar preview"
-//           className="w-20 h-20 rounded-full object-cover mt-2 mx-auto border"
-//         />
-//       )}
-
-//       <Button type="submit" className="mt-2">
-//         Sign Up
-//       </Button>
-
-//       {state.message && (
-//         <p className="text-red-500 text-center">{state.message}</p>
-//       )}
-//     </form>
-//   );
-// }
-
+export default RegisterPage;
