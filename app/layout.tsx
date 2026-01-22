@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ModeToggle } from "@/components/themeButton";
 import { Toaster } from "@/components/ui/sonner";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default function RootLayout({
           <Toaster position="top-right" />
 
           <main className="w-full">
-            {children}
+              {children}
           </main>
         </ThemeProvider>
       </body>
