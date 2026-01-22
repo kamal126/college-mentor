@@ -1,10 +1,12 @@
-import { auth } from "@/auth";
+
 import { fetchMentorById, fetchUserById } from "@/lib/data";
 import { redirect } from "next/navigation";
 // import ProfileCard from "./profileCard";
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
 
 export default async function Profile() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
   const user = await fetchUserById(session.user.id);

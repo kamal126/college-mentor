@@ -17,7 +17,7 @@ export default function AuthPage() {
 
   return (
     <main className="flex h-screen w-full items-center justify-center bg-blue-100 dark:bg-black/10">
-      <div className="relative rounded-lg border bg-white p-10 shadow-md w-[350px]">
+      <div className="relative rounded-lg border bg-white p-10 shadow-md w-87.5">
 
         {/* Toggle Button */}
         <button
@@ -54,3 +54,59 @@ export default function AuthPage() {
     </main>
   );
 }
+
+
+// import { signIn } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+// import React, { useState } from "react";
+
+// function LoginPage() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const router = useRouter();
+
+//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+
+//     const result = await signIn("credentials", {
+//       email,
+//       password,
+//       redirect: false,
+//     });
+
+//     if (result?.error) {
+//       console.log(result.error);
+//     } else {
+//       router.push("/dashboard");
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h1>Login</h1>
+//       <form onSubmit={handleSubmit}>
+//         <input
+//           type="email"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//         />
+//         <input
+//           type="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//         />
+//         <button
+//         className="bg-black text-white p-1 rounded-md hover:bg-black/80 cursor-pointer"
+//          type="submit">Login</button>
+//       </form>
+//       <div>
+//         Dont have an account ?
+//         <button 
+//         className="bg-black text-white p-1 rounded-md hover:bg-black/80 cursor-pointer"
+//         onClick={() => router.push("/register")}>Register</button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default LoginPage;
