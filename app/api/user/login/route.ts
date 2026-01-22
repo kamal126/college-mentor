@@ -13,9 +13,11 @@ export async function POST(request: NextRequest) {
         console.log(reqBody);
 
         const user = await User.findOne({email})
+        
         if(!user){
             return NextResponse.json({error: "User does not exist"}, {status:400})
         }
+        console.log("hi");
         console.log('user exist');
 
         // check password
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
         return respose;
         
     } catch (error:any) {
+        console.log("Timeout");
         return NextResponse.json({error: error.message}, {status:500});
     }
 }
