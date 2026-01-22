@@ -1,6 +1,7 @@
-import MentorProfile from "@/components/mentor/MentorProfile";
+
 import { Suspense } from "react";
 import MentorProfileSkeleton from "@/components/ui/skeleton";
+import MentorProfile from "@/components/mentor/mentorProfile";
 
 export default function MentorPage({
   params,
@@ -10,7 +11,7 @@ export default function MentorPage({
   const { id } = params;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
       <Suspense fallback={<MentorProfileSkeleton />}>
         {/* <h1 className="text-black">{id}</h1> */}
         <MentorProfile mentorId={id} />
