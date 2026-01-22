@@ -175,7 +175,7 @@ export async function createUser(
 
   console.log("User created successfully");
 
-  redirect("/signin");
+  redirect("/dashboard");
 }
 // ============================================================
 // =================== register user ==========================
