@@ -30,14 +30,14 @@ export default async function MentorProfile({ mentorId }: {mentorId:string}) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Name with gradient */}
-      <h1 className="text-center text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent py-6">
+      <h1 className="text-center text-4xl md:text-5xl font-extrabold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent py-6">
         {mentor.fullName}
       </h1>
 
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-2xl p-8 my-8 text-white overflow-hidden">
+      <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-2xl p-8 my-8 text-white overflow-hidden">
         {/* Avatar + Join Date Row */}
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-10">
-          <div className="relative flex-shrink-0">
+          <div className="relative shrink-0">
             <div className="bg-gray-200 border-4 border-white rounded-full overflow-hidden w-40 h-40 shadow-xl ring-4 ring-white/30">
               <Image
                 src={mentor.avatar || "/placeholder-avatar.png"}
