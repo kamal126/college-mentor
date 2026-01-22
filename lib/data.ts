@@ -39,9 +39,7 @@ export async function fetchFilteredMentors(query: string, page: number) {
 export async function fetchUserById(userId: string) {
   await connectDB();
 
-  const user = await User.findById(userId)
-    .select("-password")
-    .lean();
+  const user = await User.findById(userId);
 
   if (!user) throw new Error("User not found");
 
@@ -75,3 +73,12 @@ export async function fetchTopMentor() {
   return topMentors;
 }
 
+export async function fetchFilteredMentorsCount(query: string) {
+  await connectDB();
+
+  const count = await Mentor.countDocuments({
+    fullName: {$regex: query, $options: "i"},
+  });
+
+  return count;
+}
