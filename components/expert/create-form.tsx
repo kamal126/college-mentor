@@ -1,11 +1,13 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createExpert, State } from "@/lib/actions";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import clsx from "clsx";
 import { lusitana } from "../font";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function SubmitButton(){
     const {pending} = useFormStatus();
@@ -26,8 +28,18 @@ function SubmitButton(){
 }
 
 export default function Form() {
+
+  const {data: session, status} = useSession();
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(status==="unauthenticated"){
+      router.push("/signin");
+    }
+  },[status, router]);
+
   const initialState: State = { message: null, errors: {} };
-  const [state, formAction, isPending] = useActionState(createExpert, initialState);
+  const [state, formAction] = useActionState(createExpert, initialState);
 
   const [companies, setCompanies] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
@@ -49,27 +61,33 @@ export default function Form() {
     }
   };
 
+  if(status==="loading"){
+    return <p className="flex justify-center items-center">Loading...</p>;
+  }
+
   return (
     <form action={formAction} className="space-y-4 flex flex-col">
       <label htmlFor="fullname" 
       className="mb-3 mt-5 block text-md font-medium text-gray-900"
       >FullName:</label>
       <input name="fullName" placeholder="Full Name"
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      defaultValue={session?.user.fullName}
+      className="peer block w-full rounded-md cursor-not-allowed border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
+      readOnly
        />
 
       <label htmlFor="role"
       className="mb-3 mt-5 block text-md font-medium text-gray-900"
       >Role/Title:</label>
       <input name="title" placeholder="Role / Title"
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
        />
 
       <label htmlFor="company"
       className="mb-3 mt-5 block text-md font-medium text-gray-900"
       >Company:</label>
       <input name="company" placeholder="Company" 
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
       />
 
       {/* Companies input */}
@@ -80,7 +98,7 @@ export default function Form() {
         name="inputCompany"
         placeholder="Type company and press Enter"
         onKeyDown={handleKeyDown}
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
 
       />
 
@@ -106,7 +124,7 @@ export default function Form() {
         placeholder="exp (years)"
         step={0.1}
         min={0}
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
 
       />
 
@@ -114,7 +132,7 @@ export default function Form() {
       className="mb-3 mt-5 block text-md font-medium text-gray-900"
       >Skills:</label>
       <input name="inputSkill"
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
        placeholder="Type Skill and press Enter" onKeyDown={handleKeyDown}/>
       {/* Render tags */}
       <div className="flex gap-2 flex-wrap">
@@ -136,14 +154,14 @@ export default function Form() {
         placeholder="0.0"
         step={0.5}
         min={0}
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
       />
 
       <label htmlFor="bio"
       className="mb-3 mt-5 block text-md font-medium text-gray-900"
       >About Yourself: </label>
       <textarea name="bio" placeholder="bio" cols={10} rows={5}
-      className="peer block w-full rounded-md border border-gray-200 capitalize py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
+      className="peer block w-full rounded-md border border-gray-200 capitalize py-2.25 pl-2 text-sm outline-2 placeholder:text-gray-500"
       />
 
       {/* <Button type="submit">Save Expert</Button> */}
