@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { lusitana } from "../font";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function SubmitButton(){
     const {pending} = useFormStatus();
@@ -43,6 +44,12 @@ export default function Form() {
 
   const [companies, setCompanies] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
+
+  useEffect(()=>{
+    if(state.message){
+      toast.info(state?.message);
+    }
+  },[state])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === ",") {
