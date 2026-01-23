@@ -22,7 +22,7 @@ async function seedMentors() {
     // if (!user) continue;
     if (!user) {
       user = await User.create({
-        username: mentor.fullName+'_demo',
+        username: mentor.fullName+'123',
         fullName: mentor.fullName,
         email: `${mentor.fullName.replace(" ", "").toLowerCase()}@demo.com`,
         password:"123456"

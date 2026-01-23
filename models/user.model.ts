@@ -1,5 +1,4 @@
 import mongoose, { Schema, Types, Model } from "mongoose";
-import { Jwt } from "jsonwebtoken";
 
 export interface IUser {
   username: string;
