@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ModeToggle } from "@/components/themeButton";
 import { Toaster } from "@/components/ui/sonner";
-
+import Providers from "@/components/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,24 +21,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-x-hidden`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="fixed top-4 right-4 z-50">
-            <ModeToggle />
-          </div>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="fixed top-4 right-4 z-50">
+              <ModeToggle />
+            </div>
 
-          <Toaster position="top-right" />
+            <Toaster position="top-right" />
 
-          <main className="w-full">
+            <main className="w-full">
               {children}
-          </main>
-        </ThemeProvider>
+            </main>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
 }
-
