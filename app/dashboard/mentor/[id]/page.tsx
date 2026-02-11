@@ -4,12 +4,12 @@ import MentorProfileSkeleton from "@/components/ui/skeleton";
 import MentorProfile from "@/components/mentor/MentorProfile";
 
 
-export default function MentorPage({
+export default async function MentorPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const { id } =  params;
+  const { id } = await params;
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">

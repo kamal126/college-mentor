@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs/promises";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
@@ -7,24 +6,35 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
 
-export async function uploadOnCloudinary(localFilePath: string) {
-  try {
-    const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto",
-    });
+/**
+ * Uploads an image directly from a buffer to Cloudinary.
+ * @param buffer The file buffer
+ * @param filename Optional filename for Cloudinary public_id
+ * @returns { url, publicId } or null if failed
+ */
+export async function uploadOnCloudinary(buffer: Buffer, filename?: string) {
+  return new Promise<{ url: string; publicId: string } | null>((resolve) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "avatars",
+        resource_type: "auto",
+        public_id: filename ? filename.replace(/\.[^/.]+$/, "") : undefined,
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Cloudinary upload error:", error);
+          resolve(null);
+        } else if (result) {
+          resolve({
+            url: result.secure_url,
+            publicId: result.public_id,
+          });
+        } else {
+          resolve(null);
+        }
+      }
+    );
 
-    await fs.unlink(localFilePath);
-
-    return {
-      url: response.secure_url,
-      publicId: response.public_id,
-    };
-  } catch (error) {
-    try {
-      await fs.unlink(localFilePath);
-    } catch {}
-
-    console.error("Cloudinary upload error:", error);
-    return null;
-  }
+    uploadStream.end(buffer);
+  });
 }

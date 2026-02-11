@@ -1,29 +1,27 @@
+// app/api/auth/register/route.ts
 export const runtime = "nodejs";
 
 import { uploadOnCloudinary } from "@/lib/cloudinary";
 import connectDB from "@/lib/connectDB";
 import { User } from "@/models/user.model";
 import bcrypt from "bcryptjs";
-import fs from "fs/promises";
-import path from "path";
+import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  await connectDB();
-
   try {
-    const formData = await request.formData();
+    // 1️⃣ Connect to DB
+    await connectDB();
 
+    // 2️⃣ Parse form data
+    const formData = await request.formData();
     const username = formData.get("username")?.toString();
     const fullName = formData.get("fullName")?.toString();
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
     const avatar = formData.get("avatar") as File | null;
 
-    /* =====================
-       Basic validation
-    ===================== */
-
+    // 3️⃣ Basic validation
     if (!username || !email || !password) {
       return NextResponse.json(
         { error: "Username, email, and password are required" },
@@ -31,10 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    /* =====================
-       User exists check
-    ===================== */
-
+    // 4️⃣ Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -43,21 +38,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    /* =====================
-       Password hashing
-    ===================== */
-
+    // 5️⃣ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    /* =====================
-       Avatar upload
-    ===================== */
-
+    // 6️⃣ Avatar upload (serverless-safe)
     let avatarUrl = "";
-
     if (avatar && avatar.size > 0) {
       const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-
       if (!allowedTypes.includes(avatar.type)) {
         return NextResponse.json(
           { error: "Only JPG, PNG, or WEBP images are allowed" },
@@ -72,34 +59,20 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const buffer = Buffer.from(await avatar.arrayBuffer());
-
-      const fileExt = path.extname(avatar.name) || ".jpg";
-      const fileName = `${crypto.randomUUID()}${fileExt}`;
-      const tempDir = path.join(process.cwd(), "public", "temp");
-      const tempPath = path.join(tempDir, fileName);
-
-      await fs.mkdir(tempDir, { recursive: true });
-
       try {
-        await fs.writeFile(tempPath, buffer);
-
-        const uploaded = await uploadOnCloudinary(tempPath);
-        if (!uploaded?.url) {
-          throw new Error("Cloudinary upload failed");
+        const buffer = Buffer.from(await avatar.arrayBuffer());
+        const uploaded = await uploadOnCloudinary(buffer, avatar.name);
+        if (uploaded?.url) {
+          avatarUrl = uploaded.url;
+        } else {
+          console.warn("Avatar upload failed, continuing without avatar");
         }
-
-        avatarUrl = uploaded.url;
-      } finally {
-        // ✅ Always cleanup temp file
-        await fs.unlink(tempPath).catch(() => {});
+      } catch (err) {
+        console.error("Avatar upload error:", err);
       }
     }
 
-    /* =====================
-       Create user
-    ===================== */
-
+    // 7️⃣ Create user
     const user = await User.create({
       username,
       fullName,
@@ -108,15 +81,18 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
     });
 
+    // 8️⃣ Success response
     return NextResponse.json(
       {
         success: true,
         message: "User created successfully",
         userId: user._id,
+        avatar: avatarUrl || null,
       },
       { status: 201 }
     );
   } catch (error: any) {
+    console.error("Registration error:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

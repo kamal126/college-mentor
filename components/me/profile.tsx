@@ -1,33 +1,51 @@
-
+import Image from "next/image";
 import { fetchMentorById, fetchUserById } from "@/lib/data";
 import { redirect } from "next/navigation";
-// import ProfileCard from "./profileCard";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 
+/* -----------------------
+  Utils (hydration-safe)
+------------------------ */
+function formatDate(date: string | Date) {
+  return new Date(date).toISOString().slice(0, 10);
+}
+
 export default async function Profile() {
+  /* ---------- Auth ---------- */
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/login");
+  if (!session?.user?.id) redirect("/login");
 
+  /* ---------- User ---------- */
   const user = await fetchUserById(session.user.id);
+  if (!user) redirect("/login");
 
+  /* ---------- Mentor (safe) ---------- */
   let mentor = null;
   if (user.isMentor) {
-    mentor = await fetchMentorById(user._id.toString());
+    try {
+      mentor = await fetchMentorById(user._id.toString());
+    } catch {
+      mentor = null;
+    }
   }
 
-  // return <ProfileCard me={user} mentor={mentor} />;
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
 
-      {/* ===== USER HERO ===== */}
-      <div className="relative bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
-        <button>Edit</button>
+      {/* ================= USER HERO ================= */}
+      <div className="relative bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
+        <button className="absolute top-4 right-4 px-4 py-1 text-sm bg-white/20 rounded-lg">
+          Edit
+        </button>
+
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <img
+          <Image
             src={user.avatar}
             alt={user.fullName}
-            className="w-28 h-28 rounded-full border-4 border-white object-cover"
+            width={112}
+            height={112}
+            className="rounded-full border-4 border-white object-cover"
           />
 
           <div className="text-center sm:text-left">
@@ -37,7 +55,7 @@ export default async function Profile() {
 
             {user.isMentor && (
               <span className="inline-block mt-3 px-4 py-1 text-sm bg-white/20 rounded-full">
-                mentor
+                Mentor
               </span>
             )}
           </div>
@@ -45,14 +63,14 @@ export default async function Profile() {
           {mentor?.createdAt && (
             <div className="text-center sm:text-left">
               <p className="opacity-90">
-                Joined: {new Date(mentor.createdAt).toDateString()}
+                Joined: {formatDate(mentor.createdAt)}
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* ===== mentor SECTION ===== */}
+      {/* ================= MENTOR SECTION ================= */}
       {mentor && (
         <div className="bg-white rounded-2xl shadow-md p-8 space-y-6">
           <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -73,7 +91,9 @@ export default async function Profile() {
             </div>
           </div>
 
-          <q className="text-gray-500 leading-relaxed">{mentor.bio}</q>
+          <q className="text-gray-600 leading-relaxed">
+            {mentor.bio}
+          </q>
 
           {mentor.skills?.length > 0 && (
             <div>
@@ -123,9 +143,10 @@ export default async function Profile() {
         </div>
       )}
 
+      {/* ================= EMPTY STATE ================= */}
       {!mentor && (
         <div className="bg-gray-50 border border-dashed rounded-xl p-8 text-center text-gray-600">
-          <p>You are not an mentor yet.</p>
+          <p>You are not a mentor yet.</p>
           <p className="text-sm mt-1">
             Complete your mentor profile to start mentoring 🚀
           </p>
@@ -134,3 +155,17 @@ export default async function Profile() {
     </div>
   );
 }
+
+
+
+/**
+
+const [fullName, setFullName] = useState("");
+const [title, setTitle] = useState("");
+const [company, setCompany] = useState("");
+const [experience, setExperience] = useState("");
+const [price, setPrice] = useState("");
+const [about, setAbout] = useState("");
+
+
+ */

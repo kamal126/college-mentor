@@ -12,16 +12,21 @@ import { useRouter } from "next/navigation";
 export default function LeftSidebar() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
 
   if (status == "loading") return <div className="p-4">Loading...</div>;
 
   const handleSignout = async () => {
+    setLoading(true);
+    router.push("/");
     try {
       await signOut({ redirect: false });
       toast.success("Signed out successfully!");
-      router.push("/");
+      // router.push("/");
     } catch {
       toast.error("Failed to sign out!");
+    }finally{
+      setLoading(false);
     }
   };
 
