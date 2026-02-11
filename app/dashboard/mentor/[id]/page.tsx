@@ -8,8 +8,8 @@ export default async function MentorPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-
+  const { id } = (await params);
+  console.log(id);
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
       <Suspense fallback={<MentorProfileSkeleton />}>
