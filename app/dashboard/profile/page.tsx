@@ -1,9 +1,13 @@
 import Profile from '@/components/me/profile';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 function page() {
   return (
     <div>
-      <Profile/>
+      <Suspense fallback={<Loading/>}>
+        <Profile/>
+      </Suspense>
     </div>
   )
 }

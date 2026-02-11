@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import LeftSidebar from "@/components/LeftSidebar";
 import TopMentor from "@/components/dashboard/TopMentor";
 import Providers from "@/components/Provider";
@@ -7,6 +7,8 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { LeftSidebarSkeleton } from "@/components/ui/skeleton";
+
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +17,9 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
+          <Suspense fallback={<LeftSidebarSkeleton/>}>
           <LeftSidebar />
+          </Suspense>
         </div>
 
         {/* Mobile / Tablet Drawer */}

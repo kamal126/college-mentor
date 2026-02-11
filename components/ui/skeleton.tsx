@@ -68,5 +68,44 @@ export default function MentorProfileSkeleton() {
 }
 
 
+export function LeftSidebarSkeleton(){
+  return (
+    <div className="relative w-full h-screen md:w-62 p-4 md:p-2 space-y-4">
+          {/* Profile Card */}
+          <div className="border rounded-2xl p-6 bg-white dark:bg-gray-900 shadow-sm">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+              <div className="w-64 h-64 rounded-full bg-gray-500"></div>
+    
+              <div>
+                <p className="uppercase font-semibold text-sm">
+                </p>
+                <p className="text-sm opacity-70">
+                </p>
+              </div>
+            </div>
+          </div>
+    
+          {/* Navigation */}
+          <div className="border rounded-2xl p-4 bg-white dark:bg-gray-900 shadow-sm">
+              <div  className="block text-center p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+              </div>
+          </div>
+    
+          {/* Logout */}
+          <div
+            className="absolute bottom-10 flex h-12 w-full items-center justify-center gap-2 rounded-md bg-red-400 p-3 cursor-pointer text-sm font-medium"
+          >
+          </div>
+        </div>
+  )
+}
+
+
+
+
+
+
+
+
 
 export { Skeleton }

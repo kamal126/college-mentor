@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import MentorProfileSkeleton from "@/components/ui/skeleton";
 import MentorProfile from "@/components/mentor/MentorProfile";
@@ -7,7 +6,7 @@ import MentorProfile from "@/components/mentor/MentorProfile";
 export default async function MentorPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
@@ -20,4 +19,6 @@ export default async function MentorPage({
     </div>
   );
 }
+
+
 
