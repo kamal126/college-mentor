@@ -5,7 +5,7 @@ export default function Loading() {
       <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
   
         {/* ================= USER HERO ================= */}
-        <div className="relative bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
+        <div className="relative bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white shadow-lg">
           <button className="absolute top-4 right-4 px-4 py-1 text-sm bg-white/20 rounded-lg">
           </button>
   

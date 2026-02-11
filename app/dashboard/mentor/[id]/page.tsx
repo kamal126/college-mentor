@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import MentorProfileSkeleton from "@/components/ui/skeleton";
-import MentorProfile from "@/components/mentor/MentorProfile";
+import MentorProfile from "./MentorProfile"
 
 
 /* ============================= */
