@@ -5,7 +5,7 @@ import MentorProfile from "@/components/mentor/MentorProfile";
 
 
 /* ============================= */
-/*  Dynamic Metadata (SEO)     */
+/*    Dynamic Metadata (SEO)     */
 /* ============================= */
 
 export async function generateMetadata({
@@ -22,7 +22,7 @@ export async function generateMetadata({
 }
 
 /* ============================= */
-/*  Page Component             */
+/*    Page Component             */
 /* ============================= */
 
 export default async function MentorPage({
