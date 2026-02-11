@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import MentorProfileSkeleton from "@/components/ui/skeleton";
 import MentorProfile from "@/components/mentor/MentorProfile";
 
+
 /* ============================= */
 /*  Dynamic Metadata (SEO)     */
 /* ============================= */
