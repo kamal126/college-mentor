@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface Mentor {
@@ -14,6 +15,7 @@ interface TopMentorCardProps {
 
 export const TopMentorCard: React.FC<TopMentorCardProps> = ({ mentor }) => {
   return (
+    <Link href={`/dashboard/mentor/${mentor._id}`}>
     <div className="flex items-center gap-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-600 p-2 rounded-md">
       <img
         src={mentor.avatar || "/default-avatar.png"}
@@ -25,5 +27,6 @@ export const TopMentorCard: React.FC<TopMentorCardProps> = ({ mentor }) => {
         {mentor.title && <span className="text-sm text-gray-500">{mentor.title}</span>}
       </div>
     </div>
+    </Link>
   );
 };
