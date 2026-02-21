@@ -11,8 +11,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 // Loading animation
-const shimmer =
-  'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
+export const shimmer = 'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
 
 export function MentorCardsSkeleton() {
   return (
@@ -103,6 +102,21 @@ export function LeftSidebarSkeleton(){
 
 
 
+export function MentorCardSkeleton() {
+  return (
+    <div className="p-6 rounded-2xl bg-gray-200 dark:bg-white/10 animate-pulse space-y-4">
+      <div className="flex gap-4 items-center">
+        <div className="w-16 h-16 bg-gray-300 dark:bg-white/20 rounded-full"></div>
+        <div className="space-y-2 flex-1">
+          <div className="h-4 bg-gray-300 dark:bg-white/20 rounded w-1/3"></div>
+          <div className="h-3 bg-gray-300 dark:bg-white/20 rounded w-1/2"></div>
+        </div>
+      </div>
+      <div className="h-3 bg-gray-300 dark:bg-white/20 rounded w-full"></div>
+      <div className="h-3 bg-gray-300 dark:bg-white/20 rounded w-5/6"></div>
+    </div>
+  );
+}
 
 
 

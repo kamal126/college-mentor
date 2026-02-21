@@ -1,5 +1,6 @@
 "use client";
 
+import { StepBackIcon, StepForwardIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Pagination({ hasNextPage }: { hasNextPage: boolean }) {
@@ -13,9 +14,10 @@ export default function Pagination({ hasNextPage }: { hasNextPage: boolean }) {
       <button
         disabled={page <= 1}
         onClick={() => router.push(`?page=${page - 1}`)}
-        className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+        className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
-        Previous
+        {/* Previous */}
+        <StepBackIcon className="text-black"/>
       </button>
 
       <span className="px-4 py-2 font-medium">
@@ -25,9 +27,10 @@ export default function Pagination({ hasNextPage }: { hasNextPage: boolean }) {
       <button
         disabled={!hasNextPage}
         onClick={() => router.push(`?page=${page + 1}`)}
-        className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50"
+        className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 cursor-pointer"
       >
-        Next
+        {/* Next */}
+        <StepForwardIcon className="text-black"/>
       </button>
     </div>
   );

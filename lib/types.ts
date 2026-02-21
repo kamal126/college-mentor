@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export type State = {
   errors?: Record<string, string[]>;
   message?: string | null;
@@ -36,3 +38,41 @@ export type expert = {
   pastCompanies: string;
 };
 
+export type Conversation = {
+  _id?: mongoose.Types.ObjectId;
+  image?: string;
+  participants: mongoose.Types.ObjectId;
+  isGroup: boolean;
+  name?: string;
+  groupName?: string;
+  groupImage?: string;
+  admin?: mongoose.Types.ObjectId;
+  isOnline?: boolean;
+  lastMessage?: {
+    _id: mongoose.Types.ObjectId;
+    conversation: mongoose.Types.ObjectId;
+    content: string;
+    sender: mongoose.Types.ObjectId;
+  }
+}
+
+export type ConversationStore = {
+  selectedConversation: Conversation | null;
+  setSelectedConversation: (conversation: Conversation | null) => void
+}
+
+export interface IMessage {
+  _id: string;
+  content: string;
+  _creationTime: number;
+  messageType: "text" | "image" | "video";
+  sender: {
+    _id : mongoose.Types.ObjectId;
+    image: string;
+    name?: string;
+    tokenIdentifier: string;
+    email: string;
+    _creationTime: number;
+    isOnline: boolean;
+  }
+}

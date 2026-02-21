@@ -7,6 +7,9 @@ import clsx from "clsx";
 import { lusitana } from "../font";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import FloatingInput from "../ui/FloatingInput";
+
 
 /* ---------------- Submit Button ---------------- */
 function SubmitButton() {
@@ -18,8 +21,9 @@ function SubmitButton() {
       disabled={pending}
       className={clsx(
         lusitana.className,
-        "text-xl bg-blue-600 p-2 hover:bg-blue-500 cursor-pointer capitalize",
-        pending && "opacity-60 cursor-not-allowed"
+        "text-xl px-5 py-2 rounded-lg transition-all duration-200 shadow-md",
+        "bg-blue-600 text-white hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400",
+        pending && "opacity-60 cursor-not-allowed shadow-none"
       )}
     >
       {pending ? "Processing..." : "Join As Mentor"}
@@ -27,15 +31,16 @@ function SubmitButton() {
   );
 }
 
+/* ---------------- Floating Input ---------------- */
+
+
 /* ---------------- Main Form ---------------- */
 export default function Form() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
+    if (status === "unauthenticated") router.push("/signin");
   }, [status, router]);
 
   const initialState: State = { message: null, errors: {} };
@@ -44,130 +49,120 @@ export default function Form() {
   const [companies, setCompanies] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
 
-  /* -------- Handle Enter / Comma for Tags -------- */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
       const value = e.currentTarget.value.trim();
       if (!value) return;
 
-      if (e.currentTarget.name === "inputCompany") {
-        setCompanies((prev) => [...prev, value]);
-      }
-
-      if (e.currentTarget.name === "inputSkill") {
-        setSkills((prev) => [...prev, value]);
-      }
+      if (e.currentTarget.name === "inputCompany") setCompanies((prev) => [...prev, value]);
+      if (e.currentTarget.name === "inputSkill") setSkills((prev) => [...prev, value]);
 
       e.currentTarget.value = "";
     }
   };
 
+  const removeTag = (index: number, type: "company" | "skill") => {
+    if (type === "company") setCompanies(companies.filter((_, i) => i !== index));
+    if (type === "skill") setSkills(skills.filter((_, i) => i !== index));
+  };
+
   if (status === "loading") {
-    return <p className="flex justify-center items-center">Loading...</p>;
+    return <p className="flex justify-center items-center h-32 text-gray-500 dark:text-gray-300">Loading...</p>;
   }
 
-  return (
-    <form action={formAction} className="space-y-4 flex flex-col">
-      {/* Full Name */}
-      <label className="mt-5 text-md font-medium">Full Name</label>
-      <input
-        name="fullName"
-        defaultValue={session?.user?.fullName}
-        readOnly
-        className="cursor-not-allowed rounded-md border p-2 capitalize"
-      />
+  const tagClasses =
+    "px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 flex items-center gap-2";
 
-      {/* Title */}
-      <label className="mt-5 text-md font-medium">Role / Title</label>
-      <input
-        name="title"
-        placeholder="Software Engineer"
-        className="rounded-md border p-2"
-      />
+  return (
+    <form action={formAction} className="space-y-4 flex flex-col max-w-xl mx-auto">
+      {/* Full Name */}
+      <FloatingInput label="" name="fullname" placeholder="FullName" value={session?.user.fullName} disabled/>
+
+
+      {/* Role / Title */}
+      <FloatingInput label="Role / Title" name="title" placeholder="Software Engineer" />
 
       {/* Current Company */}
-      <label className="mt-5 text-md font-medium">Current Company</label>
-      <input
-        name="company"
-        placeholder="Google"
-        className="rounded-md border p-2"
-      />
+      <FloatingInput label="Current Company" name="company" placeholder="Google" />
 
       {/* Past Companies */}
-      <label className="mt-5 text-md font-medium">Past Companies</label>
-      <input
+      <FloatingInput
+        label="Past Companies"
         name="inputCompany"
         placeholder="Type & press Enter"
         onKeyDown={handleKeyDown}
-        className="rounded-md border p-2"
       />
-
-      <div className="flex gap-2 flex-wrap">
-        {companies.map((c, i) => (
-          <span key={i} className="px-2 py-1 bg-gray-200 rounded">
-            {c}
-          </span>
-        ))}
+      <div className="flex gap-2 flex-wrap mt-2">
+        <AnimatePresence>
+          {companies.map((c, i) => (
+            <motion.span
+              key={i}
+              className={tagClasses}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {c}
+              <button type="button" onClick={() => removeTag(i, "company")} className="font-bold">×</button>
+            </motion.span>
+          ))}
+        </AnimatePresence>
       </div>
-
-      {companies.map((c, i) => (
-        <input key={i} type="hidden" name="companies" value={c} />
-      ))}
+      {companies.map((c, i) => <input key={i} type="hidden" name="companies" value={c} />)}
 
       {/* Experience */}
-      <label className="mt-5 text-md font-medium">Experience (years)</label>
-      <input
-        name="experience"
-        type="number"
-        step={0.1}
-        min={0}
-        className="rounded-md border p-2"
-      />
+      <FloatingInput label="Experience (years)" name="experience" type="number" step={0.1} min={0} />
 
       {/* Skills */}
-      <label className="mt-5 text-md font-medium">Skills</label>
-      <input
+      <FloatingInput
+        label="Skills"
         name="inputSkill"
         placeholder="Type & press Enter"
         onKeyDown={handleKeyDown}
-        className="rounded-md border p-2"
       />
-
-      <div className="flex gap-2 flex-wrap">
-        {skills.map((s, i) => (
-          <span key={i} className="px-2 py-1 bg-gray-200 rounded">
-            {s}
-          </span>
-        ))}
+      <div className="flex gap-2 flex-wrap mt-2">
+        <AnimatePresence>
+          {skills.map((s, i) => (
+            <motion.span
+              key={i}
+              className={tagClasses}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {s}
+              <button type="button" onClick={() => removeTag(i, "skill")} className="font-bold">×</button>
+            </motion.span>
+          ))}
+        </AnimatePresence>
       </div>
-
-      {skills.map((s, i) => (
-        <input key={i} type="hidden" name="skills" value={s} />
-      ))}
+      {skills.map((s, i) => <input key={i} type="hidden" name="skills" value={s} />)}
 
       {/* Price */}
-      <label className="mt-5 text-md font-medium">Price ($/hr)</label>
-      <input
-        name="price"
-        type="number"
-        step={0.5}
-        min={0}
-        className="rounded-md border p-2"
-      />
+      <FloatingInput label="Price ($/hr)" name="price" type="number" step={0.5} min={0} />
 
       {/* About */}
-      <label className="mt-5 text-md font-medium">About Yourself</label>
-      <textarea
-        name="about"
-        rows={5}
-        className="rounded-md border p-2"
-      />
+      <div className="relative w-full mt-5">
+        <textarea
+          name="bio"
+          rows={5}
+          placeholder=" "
+          className="peer w-full rounded-lg border p-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all shadow-sm"
+        />
+        <label className="absolute left-3 top-3 text-gray-500 dark:text-gray-400 text-md transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-blue-500 dark:peer-focus:text-blue-400 pointer-events-none">
+          About Yourself
+        </label>
+      </div>
 
+      {/* Submit */}
       <SubmitButton />
 
+      {/* Success Message */}
       {state.message && (
-        <p className="text-green-600 font-medium">{state.message}</p>
+        <p className="text-green-600 font-medium dark:text-green-400">{state.message}</p>
       )}
     </form>
   );

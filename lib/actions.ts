@@ -258,7 +258,7 @@ export async function createExpert(
   const price = Number(formData.get("price"));
   const skills = formData.getAll("skills") as string[];
 
-  const mentor = await Mentor.create({
+  await Mentor.create({
     user: user._id,
     fullName,
     avatar: user.avatar,
@@ -281,3 +281,20 @@ export async function createExpert(
   return { message: "Mentor created successfully 🎉", success: true };
 }
 
+
+
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context:any) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: { session } };
+}

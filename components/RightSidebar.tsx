@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { authors, trending } from '@/data/data'
 import { BadgeCheck, TrendingUp } from 'lucide-react'
+import Image from 'next/image'
 
 export default async function RightSidebar() {
   return (
@@ -11,9 +12,9 @@ export default async function RightSidebar() {
           {authors.map((author, idx) => (
             <div key={idx} className="flex gap-2 m-4">
               <div className="">
-                <img
+                <Image
                   src={author.img}
-                  alt=""
+                  alt={author.name}
                   height={50}
                   width={50}
                   className="rounded-full border-green-700 border-2 bg-gray-500"

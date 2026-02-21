@@ -4,15 +4,20 @@ import { fetchMentorById } from "@/lib/data";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import clsx from "clsx";
+import Link from "next/link";
 import { lusitana } from "@/components/font";
+
 
 interface MentorProfileProps {
   mentorId: string;
+  id: string;
 }
 
 export default async function MentorProfile({
   mentorId,
+  id
 }: MentorProfileProps) {
+
   const mentor = await fetchMentorById(mentorId);
 
   if (!mentor) {
@@ -22,7 +27,7 @@ export default async function MentorProfile({
           Mentor Not Found
         </h2>
         <p className="text-gray-500">
-          The mentor you're looking for doesn't exist or has been removed.
+          The mentor you&apos;re looking for doesn&apos;t exist or has been removed.
         </p>
       </div>
     );
@@ -68,6 +73,12 @@ export default async function MentorProfile({
             >
               Joined {joinedDate}
             </p>
+
+            <Link href={`/dashboard/mentor/${id}/chat`}>
+              <button className="bg-yellow-700 p-2 rounded-xl text-white cursor-pointer">
+                Connect Me
+              </button>
+            </Link>
 
             {/* {mentor.location && (
               <p className="text-lg opacity-90">📍 {mentor.location}</p>

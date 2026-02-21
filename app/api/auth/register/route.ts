@@ -5,7 +5,6 @@ import { uploadOnCloudinary } from "@/lib/cloudinary";
 import connectDB from "@/lib/connectDB";
 import { User } from "@/models/user.model";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

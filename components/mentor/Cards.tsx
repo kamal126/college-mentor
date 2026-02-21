@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchFilteredMentors } from "@/lib/data";
-import {MentorCard} from "../MentorCard";
+import {MentorCard} from "./MentorCard";
 
 export default async function Cards({
   query, page

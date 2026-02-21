@@ -1,15 +1,16 @@
 import React from "react";
 import Breadcrumbs from "@/components/expert/breadcrumbs";
-import { ArrowUpRight, AwardIcon, BookOpenTextIcon, RadarIcon, TargetIcon, TrendingUp } from "lucide-react";
+import { ArrowUpRight, AwardIcon, BookOpenTextIcon, TargetIcon, TrendingUp } from "lucide-react";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/auth";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+
 
 export default async function page() {
 
   const session = await getServerSession(authOptions);
   if(!session){
-    redirect('/test');
+    return redirect("/signin");
   }
   
   return (
@@ -106,19 +107,3 @@ export default async function page() {
     </main>
   );
 }
-
-// import { auth } from "@/auth";
-// import { redirect } from "next/navigation";
-
-// export default async function Dashboard() {
-//   // const session = await auth();
-
-//   // if (!session) redirect("/login");
-
-//   return (
-//     <div>
-//       {/* <h1>Welcome {session.user.username}</h1>
-//       <p>Mentor: {session.user.isMentor ? "Yes" : "No"}</p> */}
-//     </div>
-//   );
-// }

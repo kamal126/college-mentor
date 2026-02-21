@@ -13,8 +13,9 @@ async function users() {
 export async function GET() {
   try {
     // const data = await mentors();
-    const data = await users();
-    return Response.json(data);
+    const data1 = await users();
+    const data2 = await mentors();
+    return Response.json({data1, data2});
   } catch (error) {
     console.error(error);
     return Response.json({ error: "failed" }, { status: 500 });

@@ -1,4 +1,4 @@
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/dashboard/SearchBar";
 import Cards from "@/components/mentor/Cards";
 import { lusitana } from "@/components/font";
 import { Suspense } from "react";
@@ -31,7 +31,7 @@ export default async function Page({
           </h1>
         </div>
 
-        <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+        <div className="m-4 flex items-center justify-between gap-2 md:mt-8">
           <SearchBar placeholder="Search mentors..." />
         </div>
 

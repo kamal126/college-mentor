@@ -1,20 +1,18 @@
-"use client";
+import { getServerSession } from "next-auth/next";
+import { redirect } from "next/navigation";
+import SignupForm from "./SignupForm";
+import { authOptions } from "@/auth";
 
-// import { useFormState } from "react-dom";
-import SignupForm from "@/components/signup-form";
-import { Suspense } from "react";
-export default function Page() {
 
-  return (
-    <main className="flex flex-col w-full h-screen justify-center items-center bg-blue-100">
-      <div className="border-2 border-slate-300 p-10 rounded-lg bg-white">
-        <div className="flex justify-center mb-3 font-semibold rounded-sm bg-blue-300">
-          <h2 className="text-2xl">Sign Up</h2>
-        </div>
-        <Suspense>
-            <SignupForm/>
-        </Suspense>
-      </div>
-    </main>
-  );
+export default async function SignupPage() {
+  // Server-side session check
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    // Redirect logged-in users to dashboard
+    redirect("/dashboard");
+  }
+
+  // Render client-side signup form for unauthenticated users
+  return <SignupForm />;
 }

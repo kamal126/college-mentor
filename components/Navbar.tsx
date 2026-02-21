@@ -1,7 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { HouseIcon } from "lucide-react";
-import { Users } from "lucide-react";
 
 function heading() {
   return (

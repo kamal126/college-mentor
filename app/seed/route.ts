@@ -1,12 +1,6 @@
-import { mentors, authors, trending } from "@/data/data";
+import { mentors } from "@/data/data";
 import { User, Mentor } from "@/models/user.model";
 import connectDB from "@/lib/connectDB";
-
-// async function listUser() {
-//     const data = mentors.filter((m) => m.active  === true);
-
-//     return data;
-// }
 
 async function seedMentors() {
   // 🔒 Prevent seeding in production
@@ -22,10 +16,10 @@ async function seedMentors() {
     // if (!user) continue;
     if (!user) {
       user = await User.create({
-        username: mentor.fullName+'123',
+        username: mentor.fullName + "123",
         fullName: mentor.fullName,
         email: `${mentor.fullName.replace(" ", "").toLowerCase()}@demo.com`,
-        password:"123456"
+        password: "123456",
       });
     }
 
@@ -53,34 +47,25 @@ async function seedMentors() {
   return res;
 }
 
-
-// async function tempUser() {
-//   const data = await User.find();
-
-//   return data;
-// }
-
 export async function GET() {
   if (process.env.NODE_ENV === "production") {
     return Response.json(
       { error: "Seeding not allowed in production" },
-      { status: 403 }
+      { status: 403 },
     );
   }
-  //   return Response.json({
-  //     message:
-  //       'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  //   });
+
   try {
     const mentors = await seedMentors();
 
     return Response.json({
-      status:200,
-      success:true,
+      status: 200,
+      success: true,
       count: mentors.length,
       mentors,
     });
   } catch (error) {
+    console.log(error);
     return Response.json({ error: "seed failed" }, { status: 500 });
   }
 }

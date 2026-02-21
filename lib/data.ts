@@ -1,18 +1,27 @@
 import { User, Mentor } from "@/models/user.model";
 import connectDB from "@/lib/connectDB";
-// import { mentors } from "@/data/data";
+
+
+function serialize(doc:any){
+  return {
+    ...doc,
+    _id: doc._id?.toString(),
+    user: doc.user?.toString(),
+    createdAt: doc.createdAt?.toISOString?.(),
+    updatedAt: doc.updatedAt?.toISOString?.(),
+  };
+}
 
 
 export async function fetchUsers() {
   await connectDB();
   try {
-
     const users = await User.find({})
       .select("-password")
       .sort({ username: 1 })
       .lean();
 
-    return users; // can be []
+    return users.map(serialize) ; // can be []
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch users.");
@@ -33,32 +42,31 @@ export async function fetchFilteredMentors(query: string, page: number) {
     .limit(ITEMS_PER_PAGE)
     .lean();
 
-  return mentors;
+  return mentors.map(serialize);
 }
 
 export async function fetchUserById(userId: string) {
   await connectDB();
 
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).lean();
 
   if (!user) throw new Error("User not found");
 
-  return user;
+  return serialize(user);
 }
 
 export async function fetchMentorById(mentorId: string) {
   await connectDB();
 
-  let mentor = null;
-  mentor = await Mentor.findOne({user: mentorId})
+  let mentor = await Mentor.findOne({user: mentorId}).lean();
 
   if(!mentor){
-    mentor = await Mentor.findById(mentorId);
+    mentor = await Mentor.findById(mentorId).lean();
   }
 
   if (!mentor) throw new Error("Mentor not found");
 
-  return mentor;
+  return serialize(mentor);
 }
 
 
@@ -70,7 +78,7 @@ export async function fetchTopMentor() {
     .limit(5)
     .lean();
 
-  return topMentors;
+  return topMentors.map(serialize);
 }
 
 export async function fetchFilteredMentorsCount(query: string) {
