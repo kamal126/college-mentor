@@ -13,7 +13,7 @@ export default function DashboardLayoutClient({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen lg:overflow-hidden">
 
        {/* Desktop Sidebar */}
         {/* <div className="hidden lg:flex lg:flex-col w-64 border-r overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
@@ -43,7 +43,7 @@ export default function DashboardLayoutClient({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 md:min-w-3xl">
+      <div className="flex-1 md:min-w-3xl overflow-scroll">
 
         {/* Mobile Header */}
         <div className="lg:hidden flex justify-between items-center p-4 border-b bg-white dark:bg-[#0F172A]">
