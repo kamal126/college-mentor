@@ -12,7 +12,12 @@ export interface IUser {
   avatar: string;
   password: string;
   isMentor: boolean;
-  refershToken: string;
+  refreshToken?: string;
+
+  // Forgot password fields
+  resetToken?: string;
+  resetTokenExpiry?: Date;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -36,7 +41,7 @@ export interface IExpert {
 }
 
 /* ============================= */
-/* 🔹 Helper: Global Transform   */
+/*  Helper: Global Transform   */
 /* ============================= */
 
 const transform = (_: any, ret: any) => {
@@ -51,7 +56,7 @@ const transform = (_: any, ret: any) => {
 };
 
 /* ============================= */
-/* 👤 User Schema                */
+/* User Schema                */
 /* ============================= */
 
 const userSchema = new Schema<IUser>(
@@ -74,7 +79,10 @@ const userSchema = new Schema<IUser>(
     avatar: { type: String },
     password: { type: String, required: true },
     isMentor: { type: Boolean, default: false },
-    refershToken: { type: String },
+    refreshToken: { type: String },
+    // Forgot Password Fields
+    resetToken: { type: String },
+    resetTokenExpiry: { type: Date },
   },
   {
     timestamps: true,
@@ -84,7 +92,7 @@ const userSchema = new Schema<IUser>(
 );
 
 /* ============================= */
-/* 🧠 Mentor Schema              */
+/*  Mentor Schema              */
 /* ============================= */
 
 const expertSchema = new Schema<IExpert>(

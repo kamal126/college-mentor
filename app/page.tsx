@@ -41,12 +41,9 @@ export default function Page() {
             >
               AI-Powered Career{" "}
               <span className="px-2 md:px-4 relative">
-                <Image
-                  src="/public/assets/line.svg"
-                  alt="line"
-                  height={100}
-                  width={100}
-                  priority
+                <img
+                  src={"/line.svg"}
+                  alt="."
                   className="absolute -bottom-1 left-3 z-10 w-11/12 -rotate-5"
                 />
                 <span className="relative z-20">Guidance</span>
@@ -54,6 +51,7 @@ export default function Page() {
               <Sparkles
                 className="size-12 animate-pulse md:inline hidden"
                 strokeWidth={1.1}
+                fillOpacity={1}
                 fill="#E1B10D"
                 stroke="#E1B10D"
               />
@@ -74,9 +72,9 @@ export default function Page() {
             <Link href="/dashboard">
               <Button
                 size="lg"
-                className="rounded-full px-8 gap-2 text-lg group glow cursor-pointer"
+                className="rounded-full px-8 gap-2 text-lg group glow"
               >
-                Get Started
+                Dashboard
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
@@ -113,12 +111,10 @@ export default function Page() {
                     </div>
                     <Image
                       src="/assets/Research.svg"
-                      alt="Research"
+                      alt=""
                       width={400}
+                      className="h-auto lg:w-96 md:w-80 w-52 "
                       height={100}
-                      // loading="lazy"
-                      priority
-                      className="h-auto lg:w-96 md:w-80 w-52"
                     />
                   </div>
                 </div>
@@ -129,17 +125,20 @@ export default function Page() {
 
         {/* Decorative Dots */}
         <Image
-          src="/assets/dots.svg"
+          src="/dots.svg"
           alt=""
           height={200}
           width={200}
           className="absolute top-40 -left-20 opacity-60 hidden md:block"
         />
-        <Image
-          src="/assets/dots.svg"
-          alt=""
-          height={200}
-          width={200}
+        <img
+          src="/dots.svg"
+          alt="."
+          className="absolute top-40 -left-20 opacity-60 hidden md:block"
+        />
+         <img
+          src="/dots.svg"
+          alt="."
           className="absolute bottom-80 -right-20 opacity-60 hidden md:block"
         />
       </section>

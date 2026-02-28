@@ -10,7 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AI-Mentor",
-  description: "Dive into our comprehensive music courses and transform your musical journey today.",
+  description:
+    "Dive into our comprehensive music courses and transform your musical journey today.",
 };
 
 export default function RootLayout({
@@ -28,15 +29,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="fixed top-4 right-4 z-50">
+            <div className="hidden md:block fixed top-4 right-4 z-50">
               <ModeToggle />
             </div>
 
             <Toaster position="top-right" />
 
-            <main className="w-full">
-              {children}
-            </main>
+            <main className="w-full">{children}</main>
           </ThemeProvider>
         </Providers>
       </body>

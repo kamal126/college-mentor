@@ -5,8 +5,9 @@ import TopMentor from "@/components/mentor/TopMentor";
 import Providers from "@/components/Provider";
 import { ReactNode, Suspense } from "react";
 import { LeftSidebarSkeleton } from "@/components/ui/skeleton";
+import DashboardLayoutClient from "@/components/dashboard/DashboardLayoutClient";
 
-export default async function Layout({ children }: {children:ReactNode}) {
+export default async function Layout({ children }: { children: ReactNode }) {
   // const mentors = await fetchTopMentor(); // server-side fetch
 
   return (
@@ -20,13 +21,13 @@ export default async function Layout({ children }: {children:ReactNode}) {
         </div>
 
         {/* Main Content */}
+        <DashboardLayoutClient>
         <main className="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto">
-          {children}
-        </main>
-
+            {children}</main>
+        </DashboardLayoutClient>
         {/* Right Sidebar */}
         <div className="hidden lg:flex  overflow-hidden lg:flex-col w-80 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
-          <TopMentor/>
+          <TopMentor />
         </div>
       </div>
     </Providers>
