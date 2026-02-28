@@ -22,6 +22,7 @@ export default function LeftSidebar({
     { name: "Home", href: "/dashboard" },
     { name: "Expert", href: "/dashboard/mentor" },
     { name: "Profile", href: "/dashboard/profile" },
+    { name: "Inbox", href: "/dashboard/inbox" },
     { name: "Join As Expert", href: "/dashboard/expert" },
     { name: "Chat", href: "/dashboard/chat" },
   ];

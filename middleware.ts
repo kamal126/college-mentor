@@ -19,6 +19,7 @@ export default withAuth(
 
                 if(pathname === "/") return true;
 
+                // return true;
                 return !!token;
             },
         },
