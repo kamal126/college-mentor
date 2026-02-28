@@ -25,7 +25,7 @@ export default function DashboardLayoutClient({
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -33,7 +33,7 @@ export default function DashboardLayoutClient({
       {/* Mobile Sidebar */}
       <div
         className={`
-          fixed md:hidden z-50 top-0 left-0 h-full w-72
+          fixed lg:hidden z-50 top-0 left-0 h-full w-72
           bg-white dark:bg-[#0F172A]
           transform transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
@@ -43,10 +43,10 @@ export default function DashboardLayoutClient({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 md:min-w-3xl">
 
         {/* Mobile Header */}
-        <div className="md:hidden flex justify-between items-center p-4 border-b bg-white dark:bg-[#0F172A]">
+        <div className="lg:hidden flex justify-between items-center p-4 border-b bg-white dark:bg-[#0F172A]">
           <h2 className="font-semibold">Dashboard</h2>
           <button onClick={() => setIsOpen(true)}>
             <Menu />

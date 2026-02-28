@@ -14,7 +14,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     <Providers>
       <div className="flex h-screen bg-blue-50 dark:bg-black/10">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:flex lg:flex-col w-64 border-r overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+        <div className="hidden lg:flex lg:flex-col w-64 border-r md:overflow-hidden border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
           <Suspense fallback={<LeftSidebarSkeleton />}>
             <LeftSidebar />
           </Suspense>
@@ -22,7 +22,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
         {/* Main Content */}
         <DashboardLayoutClient>
-        <main className="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-8 lg:p-12 md:max-w-4xl overflow-y-auto">
             {children}</main>
         </DashboardLayoutClient>
         {/* Right Sidebar */}
